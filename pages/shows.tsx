@@ -1,12 +1,10 @@
 import React from "react";
 import { GetStaticProps } from "next";
 import Layout from "../components/Layout";
-// import Post, { PostProps } from "../components/Post";
 import Show, { ShowProps } from "../components/Show";
 import prisma from '../lib/prisma'
 
 export const getStaticProps: GetStaticProps = async () => {
-  //const feed = await prisma.show.findMany()
   const feed = await prisma.show.findMany();
   return {
     props: { feed },
@@ -16,24 +14,6 @@ export const getStaticProps: GetStaticProps = async () => {
 type Props = {
   feed: ShowProps[];
 };
-
-// const Shows: React.FC<Props> = (props) => {
-//   return (
-//     <Layout>
-//       <div className="page">
-//         <h1>Public Feed</h1>
-//         <main>
-//           {props.feed.map((post) => (
-//             <div key={post.id} className="post">
-//               <Show />
-//               {/* <Post post={post} /> */}
-//             </div>
-//           ))}
-//         </main>
-//       </div>
-//     </Layout>
-//   );
-// };
 
 const Shows: React.FC<Props> = (props) => {
   return (
