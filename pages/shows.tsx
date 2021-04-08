@@ -5,7 +5,7 @@ import Show, { ShowProps } from "../components/Show";
 import prisma from '../lib/prisma'
 
 export const getStaticProps: GetStaticProps = async () => {
-  const feed = await prisma.show.findMany();
+  const feed = await prisma.post.findMany();
   return {
     props: { feed },
   };
