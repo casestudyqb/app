@@ -1,29 +1,25 @@
-import React, { useState } from "react";
+import React from "react";
+import { GetStaticProps } from "next";
 import Layout from "../components/Layout";
-import Router from "next/router";
+import Show, { ShowProps } from "../components/Show";
+import prisma from '../lib/prisma'
 
-const Draft: React.FC = () => {
-  const [title, setTitle] = useState("");
-  const [content, setContent] = useState("");
-
-  const submitData = async (e: React.SyntheticEvent) => {
-    e.preventDefault();
-    try {
-      const body = { title, content };
-      await fetch(`http://localhost:3000/api/post`, {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(body),
-      });
-      await Router.push("/drafts");
-    } catch (error) {
-      console.error(error);
-    }
+export const getStaticProps: GetStaticProps = async () => {
+  const feed = await prisma.episode.findMany();
+  console.log("test",feed)
+  return {
+    props: { feed },
   };
+};
 
+type Props = {
+  feed: ShowProps[];
+};
+
+const Episode: React.FC<Props> = (props) => {
   return (
-    <Layout>
-      <main className="lg:col-span-9 xl:col-span-6">
+    <Layout>{console.log("test", props.feed)}
+<main className="lg:col-span-9 xl:col-span-6">
         <div className="mt-4">
           <h1 className="sr-only">Recent questions</h1>
           <ul className="space-y-4">
@@ -163,4 +159,4 @@ const Draft: React.FC = () => {
   );
 };
 
-export default Draft;
+export default Episode;
