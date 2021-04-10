@@ -5,8 +5,7 @@ import Show, { ShowProps } from "../components/Show";
 import prisma from '../lib/prisma'
 
 export const getStaticProps: GetStaticProps = async () => {
-  const feed = await prisma.episode.findMany();
-  console.log("test",feed)
+  const feed = await prisma.post.findMany();
   return {
     props: { feed },
   };
@@ -18,9 +17,9 @@ type Props = {
 
 const Episode: React.FC<Props> = (props) => {
   return (
-    <Layout>{console.log("test", props.feed)}
+    <Layout>
 <main className="lg:col-span-9 xl:col-span-6">
-        <div className="mt-4">
+        <div className="mt-4">{console.log(props.feed)}
           <h1 className="sr-only">Recent questions</h1>
           <ul className="space-y-4">
             <li className="bg-white px-4 py-6 shadow sm:p-6 sm:rounded-lg">

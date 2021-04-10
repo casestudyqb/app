@@ -86,6 +86,7 @@ model Episode {
   id           Int       @id @default(autoincrement())
   episodeNum   Int
   showId       Int
+  description  String?
   show         Show      @relation("ShowEpisodes", fields: [showId], references: [id])
   segments     Segment[]
   participants User[]    @relation("EpisodeParticipants")
