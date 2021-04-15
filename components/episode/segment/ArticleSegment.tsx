@@ -48,8 +48,6 @@ function classNames(...classes) {
   return classes.filter(Boolean).join(' ')
 }
 
-
-
 const ArticleSegment: React.FC<{ episode: ArticleSegmentProps }> = ({ episode }) => {
   //const authorName = post.author ? post.author.name : "Unknown author";
   return (
