@@ -150,7 +150,7 @@ const EpisodePage: React.FC<Props> = (props) => {
                 </nav>
               </div>
             </div>
-            <ArticleSegment />
+            {/* <ArticleSegment /> */}
           </main>
     </Layout>
   );
