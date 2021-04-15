@@ -55,6 +55,10 @@ export const getServerSideProps: GetServerSideProps = async ({ params }) => {
 
 type Props = {
   episodes: EpisodeListProps[];
+  description: string;
+  show: {
+    name: string
+  }
 };
 
 const tabs = [

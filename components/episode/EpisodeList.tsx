@@ -7,6 +7,9 @@ export type EpisodeListProps = {
   description: string;
   episodeNum: number;
   dateAired: string;
+  show:[{
+    name: string;
+  }]
   participants: [{
     image: string
   }];
