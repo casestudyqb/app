@@ -10,34 +10,52 @@ import { useSession } from "next-auth/client";
 
 
 export const getServerSideProps: GetServerSideProps = async ({ params }) => {
-  const post = await prisma.show.findUnique({
+  const episode = await prisma.show.findUnique({
     where: {
       id: Number(params?.id) || -1,
     },
-    select: {
-      episodes: true
+    select:{
+      id: true,
+      name: true,
+      description: true,
+        episodes: {
+          select: {
+            id: true,
+            description: true,
+            dateAired: true,
+            participants: {
+              select: {
+                image: true
+              }
+            }
+          }
+        }
     }
   });
   return {
-    props: post,
+    props: episode,
   };
 };
 
-async function publishPost(id: number): Promise<void> {
-  await fetch(`http://localhost:3000/api/publish/${id}`, {
-    method: "PUT",
-  });
-  await Router.push("/");
-}
+// async function publishPost(id: number): Promise<void> {
+//   await fetch(`http://localhost:3000/api/publish/${id}`, {
+//     method: "PUT",
+//   });
+//   await Router.push("/");
+// }
 
-async function deletePost(id: number): Promise<void> {
-  await fetch(`http://localhost:3000/api/post/${id}`, {
-    method: "DELETE",
-  });
-  Router.push("/");
-}
+// async function deletePost(id: number): Promise<void> {
+//   await fetch(`http://localhost:3000/api/post/${id}`, {
+//     method: "DELETE",
+//   });
+//   Router.push("/");
+// }
 
-const EpisodeListPage: React.FC<EpisodeListProps> = (props) => {
+type Props = {
+  episodes: EpisodeListProps[];
+};
+
+const EpisodeListPage: React.FC<Props> = (props) => {
   const [session, loading] = useSession();
   if (loading) {
     return <div>Authenticating ...</div>;
@@ -50,40 +68,30 @@ const EpisodeListPage: React.FC<EpisodeListProps> = (props) => {
   // }
 
   return (
-    <Layout>test{console.log(props)}
-      {/* <EpisodeList post={post}/> */}
-      {/* <div>
-        <h2>{title}</h2>
-        <p>By {props?.author?.name || "Unknown author"}</p>
-        <ReactMarkdown source={props.content} />
-        {!props.published && userHasValidSession && postBelongsToUser && (
-          <button onClick={() => publishPost(props.id)}>Publish</button>
-        )}
-        {userHasValidSession && postBelongsToUser && (
-          <button onClick={() => deletePost(props.id)}>Delete</button>
-        )}
+    <Layout>
+      <div className="hidden mt-8 sm:block">
+        <div className="align-middle inline-block min-w-full border-b border-gray-200">
+          <table className="min-w-full">
+            <thead>
+              <tr className="border-t border-gray-200">
+                <th className="px-6 py-3 border-b border-gray-200 bg-gray-50 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                  <span className="lg:pl-2">Episode Description</span>
+                </th>
+                <th className="px-6 py-3 border-b border-gray-200 bg-gray-50 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                  Participants
+                </th>
+                <th className="hidden md:table-cell px-6 py-3 border-b border-gray-200 bg-gray-50 text-right text-xs font-medium text-gray-500 uppercase tracking-wider">
+                  Date Aired
+                </th>
+                <th className="pr-6 py-3 border-b border-gray-200 bg-gray-50 text-right text-xs font-medium text-gray-500 uppercase tracking-wider"></th>
+              </tr>
+            </thead>
+            {props.episodes.map((episode) => (
+            <EpisodeList  key={episode.id} episode={episode} />
+              ))}
+          </table>
+        </div>
       </div>
-      <style jsx>{`
-        .page {
-          background: white;
-          padding: 2rem;
-        }
-
-        .actions {
-          margin-top: 2rem;
-        }
-
-        button {
-          background: #ececec;
-          border: 0;
-          border-radius: 0.125rem;
-          padding: 1rem 2rem;
-        }
-
-        button + button {
-          margin-left: 1rem;
-        }
-      `}</style> */}
     </Layout>
   );
 };

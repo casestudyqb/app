@@ -1,11 +1,18 @@
 import React from "react";
 import { GetStaticProps } from "next";
 import Layout from "../components/Layout";
-import Show, { ShowProps } from "../components/Show";
+import Show, { ShowProps } from "../components/show/Show";
 import prisma from '../lib/prisma'
 
 export const getStaticProps: GetStaticProps = async () => {
-  const feed = await prisma.show.findMany();
+  const feed = await prisma.show.findMany({
+    select: {
+      id: true,
+      name: true,
+      description: true,
+      picUrl: true
+    }
+  });
   return {
     props: { feed },
   };
@@ -31,7 +38,7 @@ const Shows: React.FC<Props> = (props) => {
           <div className="mt-12 max-w-lg mx-auto grid gap-5 lg:grid-cols-3 lg:max-w-none">
             {props.feed.map((post) => (
               <div key={post.id}>
-                <Show post={post} /> 
+                <Show post={post} />
               </div>
             ))}
           </div>

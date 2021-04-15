@@ -1,7 +1,7 @@
 import React from "react";
 import { GetStaticProps } from "next";
 import Layout from "../components/Layout";
-import Show, { ShowProps } from "../components/Show";
+import Show, { ShowProps } from "../components/show/Show";
 import prisma from '../lib/prisma'
 
 export const getStaticProps: GetStaticProps = async () => {
@@ -18,8 +18,8 @@ type Props = {
 const Episode: React.FC<Props> = (props) => {
   return (
     <Layout>
-<main className="lg:col-span-9 xl:col-span-6">
-        <div className="mt-4">{console.log(props.feed)}
+      <main className="lg:col-span-9 xl:col-span-6">
+        <div className="mt-4">
           <h1 className="sr-only">Recent questions</h1>
           <ul className="space-y-4">
             <li className="bg-white px-4 py-6 shadow sm:p-6 sm:rounded-lg">

@@ -28,6 +28,7 @@ model User {
   posts         Post[]
   segmentNotes  SegmentNote[]
   episodes      Episode[]     @relation("EpisodeParticipants")
+  segments      Segment[]     @relation("SegmentCreatedBy")
 
   @@map("users")
 }
@@ -80,6 +81,8 @@ model Show {
   description String
   picUrl      String?
   episodes    Episode[] @relation("ShowEpisodes")
+  createdAt  DateTime @default(now()) @map("created_at")
+  updatedAt  DateTime @default(now()) @map("updated_at")
 }
 
 model Episode {
@@ -87,9 +90,12 @@ model Episode {
   episodeNum   Int
   showId       Int
   description  String?
+  dateAired    String?
   show         Show      @relation("ShowEpisodes", fields: [showId], references: [id])
   segments     Segment[]
   participants User[]    @relation("EpisodeParticipants")
+  createdAt    DateTime  @default(now()) @map("created_at")
+  updatedAt    DateTime  @default(now()) @map("updated_at")
 }
 
 model Segment {
@@ -105,6 +111,9 @@ model Segment {
   episode       Episode         @relation(fields: [episodeId], references: [id])
   segmentType   SegmentType     @relation(fields: [segmentId], references: [id])
   segmentPicUrl SegmentPicUrl[]
+  createdBy     User[]          @relation("SegmentCreatedBy")
+  createdAt     DateTime        @default(now()) @map("created_at")
+  updatedAt     DateTime        @default(now()) @map("updated_at")
 }
 
 model SegmentType {
@@ -114,10 +123,12 @@ model SegmentType {
 }
 
 model SegmentNote {
-  id       Int    @id @default(autoincrement())
-  noteText String
-  authorId Int
-  author   User   @relation(fields: [authorId], references: [id])
+  id            Int    @id @default(autoincrement())
+  noteText      String
+  authorId      Int
+  author        User   @relation(fields: [authorId], references: [id])
+  createdAt     DateTime        @default(now()) @map("created_at")
+  updatedAt     DateTime        @default(now()) @map("updated_at")
 }
 
 model SegmentPicUrl {
@@ -125,4 +136,6 @@ model SegmentPicUrl {
   url       String
   segmentId Int
   segment   Segment @relation(fields: [segmentId], references: [id])
+  createdAt     DateTime        @default(now()) @map("created_at")
+  updatedAt     DateTime        @default(now()) @map("updated_at")
 }
