@@ -8,6 +8,8 @@ import EpisodeList, {EpisodeListProps} from "../../../components/episode/Episode
 import prisma from '../../../lib/prisma'
 import { useSession } from "next-auth/client";
 import ArticleSegment from "../../../components/episode/segment/ArticleSegment"
+import PictureSegment from "../../../components/episode/segment/PictureSegment"
+import TextSegment from "../../../components/episode/segment/TextSegment"
 
 export const getServerSideProps: GetServerSideProps = async ({ params }) => {
   const episode = await prisma.episode.findUnique({
@@ -23,6 +25,8 @@ export const getServerSideProps: GetServerSideProps = async ({ params }) => {
         select: {
           id: true,
           title: true,
+          draft: true,
+          segmentId: true,
           description: true,
           image: true
         }
@@ -61,15 +65,92 @@ type Props = {
   }
 };
 
-const tabs = [
-  { name: 'Final', href: '#', current: true },
-  { name: 'Draft', href: '#', current: false },
-]
-
 function classNames(...classes) {
   return classes.filter(Boolean).join(' ')
 }
 
+const Tabs = ({ color, props }) => {
+  const [openTab, setOpenTab] = React.useState(1);
+  return (
+    <>
+      <div className="flex flex-wrap">
+        <div className="w-full">
+          <ul
+            className="flex mb-0 list-none flex-wrap pt-3 pb-4 flex-row"
+            role="tablist"
+          >
+            <li className="-mb-px mr-2 last:mr-0 flex-auto text-center">
+              <a
+                className={
+                  "text-xs font-bold uppercase px-5 py-3 shadow-lg rounded block leading-normal " +
+                  (openTab === 1
+                    ? "text-white bg-" + color + "-600"
+                    : "text-" + color + "-600 bg-white")
+                }
+                onClick={e => {
+                  e.preventDefault();
+                  setOpenTab(1);
+                }}
+                data-toggle="tab"
+                href="#link1"
+                role="tablist"
+              >
+                <i className="fas fa-space-shuttle text-base mr-1"></i> Final
+              </a>
+            </li>
+            <li className="-mb-px mr-2 last:mr-0 flex-auto text-center">
+              <a
+                className={
+                  "text-xs font-bold uppercase px-5 py-3 shadow-lg rounded block leading-normal " +
+                  (openTab === 2
+                    ? "text-white bg-" + color + "-600"
+                    : "text-" + color + "-600 bg-white")
+                }
+                onClick={e => {
+                  e.preventDefault();
+                  setOpenTab(2);
+                }}
+                data-toggle="tab"
+                href="#link2"
+                role="tablist"
+              >
+                <i className="fas fa-cog text-base mr-1"></i>  Draft
+              </a>
+            </li>
+          </ul>
+          <div className="relative flex flex-col min-w-0 break-words bg-white w-full mb-6 shadow-lg rounded">
+            <div className="px-4 py-5 flex-auto">
+              <div className="tab-content tab-space">
+                <div className={openTab === 1 ? "block" : "hidden"} id="link1">
+                {props.segments.map(data => {
+                  if (data.segmentId === 1 && data.draft === false) {
+                    return <ArticleSegment key={data.id} segment={data} />
+                  } else if (data.segmentId === 2 && data.draft === false) {
+                    return <PictureSegment key={data.id} segment={data} />
+                  } else if (data.segmentId === 3 && data.draft === false) {
+                    return <TextSegment key={data.id} segment={data} />
+                  }
+                })}
+                </div>
+                <div className={openTab === 2 ? "block" : "hidden"} id="link2">
+                  {props.segments.map(data => {
+                    if (data.segmentId === 1 && data.draft === true) {
+                      return <ArticleSegment key={data.id} segment={data} />
+                    } else if (data.segmentId === 2 && data.draft === true) {
+                      return <PictureSegment key={data.id} segment={data} />
+                    } else if (data.segmentId === 3 && data.draft === true) {
+                      return <TextSegment key={data.id} segment={data} />
+                    }
+                  })}
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </>
+  );
+};
 
 const EpisodePage: React.FC<Props> = (props) => {
   const [session, loading] = useSession();
@@ -101,57 +182,15 @@ const EpisodePage: React.FC<Props> = (props) => {
             </div>
             <div className="mt-5 flex justify-center sm:mt-0">
               <a href="#" className="flex justify-center items-center px-4 py-2 border border-gray-300 shadow-sm text-sm font-medium rounded-md text-gray-700 bg-white hover:bg-gray-50">
-                View profile
+                Add Segment
               </a>
             </div>
           </div>
         </div>
       </div>
       <main className="lg:col-span-9 xl:col-span-6">
-            <div className="px-4 sm:px-0">
-              <div className="sm:hidden">
-                <label htmlFor="question-tabs" className="sr-only">
-                  Select a tab
-                </label>
-                <select
-                  id="question-tabs"
-                  className="block w-full rounded-md border-gray-300 text-base font-medium text-gray-900 shadow-sm focus:border-rose-500 focus:ring-rose-500"
-                  defaultValue={tabs.find((tab) => tab.current).name}
-                >
-                  {tabs.map((tab) => (
-                    <option key={tab.name}>{tab.name}</option>
-                  ))}
-                </select>
-              </div>
-              <div className="hidden sm:block">
-                <nav className="relative z-0 rounded-lg shadow flex divide-x divide-gray-200" aria-label="Tabs">
-                  {tabs.map((tab, tabIdx) => (
-                    <a
-                      key={tab.name}
-                      href={tab.href}
-                      aria-current={tab.current ? 'page' : undefined}
-                      className={classNames(
-                        tab.current ? 'text-gray-900' : 'text-gray-500 hover:text-gray-700',
-                        tabIdx === 0 ? 'rounded-l-lg' : '',
-                        tabIdx === tabs.length - 1 ? 'rounded-r-lg' : '',
-                        'group relative min-w-0 flex-1 overflow-hidden bg-white py-4 px-6 text-sm font-medium text-center hover:bg-gray-50 focus:z-10'
-                      )}
-                    >
-                      <span>{tab.name}</span>
-                      <span
-                        aria-hidden="true"
-                        className={classNames(
-                          tab.current ? 'bg-rose-500' : 'bg-transparent',
-                          'absolute inset-x-0 bottom-0 h-0.5'
-                        )}
-                      />
-                    </a>
-                  ))}
-                </nav>
-              </div>
-            </div>
-            {/* <ArticleSegment /> */}
-          </main>
+        <Tabs color="purple" props={props} />
+      </main>
     </Layout>
   );
 };
