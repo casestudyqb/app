@@ -10,6 +10,7 @@ import { useSession } from "next-auth/client";
 import ArticleSegment from "../../../components/episode/segment/ArticleSegment"
 import PictureSegment from "../../../components/episode/segment/PictureSegment"
 import TextSegment from "../../../components/episode/segment/TextSegment"
+import CreateSegment from "../../../components/episode/segment/CreateSegment"
 
 export const getServerSideProps: GetServerSideProps = async ({ params }) => {
   const episode = await prisma.episode.findUnique({
@@ -181,9 +182,7 @@ const EpisodePage: React.FC<Props> = (props) => {
               </div>
             </div>
             <div className="mt-5 flex justify-center sm:mt-0">
-              <a href="#" className="flex justify-center items-center px-4 py-2 border border-gray-300 shadow-sm text-sm font-medium rounded-md text-gray-700 bg-white hover:bg-gray-50">
-                Add Segment
-              </a>
+              <CreateSegment />
             </div>
           </div>
         </div>
