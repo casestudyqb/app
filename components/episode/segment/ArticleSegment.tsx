@@ -8,6 +8,7 @@ import {
 
 export type ArticleSegmentProps = {
   id: number;
+  title: string;
   description: string;
   episodeNum: number;
   dateAired: string;
