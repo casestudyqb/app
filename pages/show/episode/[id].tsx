@@ -1,9 +1,7 @@
 import React from "react";
 import { GetServerSideProps } from "next";
-import ReactMarkdown from "react-markdown";
 import Layout from "../../../components/Layout";
 import Router from "next/router";
-import { PostProps } from "../../../components/Post";
 import EpisodeList, {EpisodeListProps} from "../../../components/episode/EpisodeList";
 import prisma from '../../../lib/prisma'
 import { useSession } from "next-auth/client";
