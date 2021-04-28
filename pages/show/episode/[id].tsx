@@ -61,12 +61,8 @@ type Props = {
   description: string;
   show: {
     name: string
-  }
+  };
 };
-
-function classNames(...classes) {
-  return classes.filter(Boolean).join(' ')
-}
 
 const Tabs = ({ color, props }) => {
   const [openTab, setOpenTab] = React.useState(1);
@@ -180,7 +176,7 @@ const EpisodePage: React.FC<Props> = (props) => {
               </div>
             </div>
             <div className="mt-5 flex justify-center sm:mt-0">
-              <CreateSegment />
+              <CreateSegment props={props}/>
             </div>
           </div>
         </div>

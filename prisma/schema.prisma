@@ -3,8 +3,8 @@ generator client {
 }
 
 datasource db {
-  provider = "sqlite"
-  url      = "file:./dev.db"
+  provider = "mysql"
+  url      = env("DATABASE_URL")
 }
 
 model Post {
@@ -105,9 +105,9 @@ model Segment {
   url           String
   image         String
   starRating    Int
-  draft         Boolean @default(true)
+  draft         Boolean         @default(true)
   episodeId     Int
-  segmentId     Int             @unique
+  segmentId     Int             
   episode       Episode         @relation(fields: [episodeId], references: [id])
   segmentType   SegmentType     @relation(fields: [segmentId], references: [id])
   segmentPicUrl SegmentPicUrl[]
@@ -118,9 +118,11 @@ model Segment {
 }
 
 model SegmentType {
-  id      Int      @id @default(autoincrement())
-  name    String
-  segment Segment?
+  id            Int      @id @default(autoincrement())
+  name          String
+  description   String
+  layout        Layout    @default(TEXT)
+  segment       Segment[]
 }
 
 model SegmentNote {
@@ -141,4 +143,10 @@ model SegmentPicUrl {
   segment   Segment @relation(fields: [segmentId], references: [id])
   createdAt     DateTime        @default(now()) @map("created_at")
   updatedAt     DateTime        @default(now()) @map("updated_at")
+}
+
+enum Layout {
+  ARTICLE
+  PICTURE
+  TEXT
 }

@@ -1,4 +1,5 @@
 import React from "react";
+import Link from 'next/link'
 import Router from "next/router";
 //import ReactMarkdown from "react-markdown";
 
@@ -24,12 +25,14 @@ const EpisodeList: React.FC<{ episode: EpisodeListProps }> = ({ episode }) => {
               <td className="px-6 py-3 max-w-0 w-full whitespace-nowrap text-sm font-medium text-gray-900">
                 <div className="flex items-center space-x-3 lg:pl-2">
                   <div className="flex-shrink-0 w-2.5 h-2.5 rounded-full bg-pink-600" aria-hidden="true"></div>
-                  <a href="#" className="truncate hover:text-gray-600">
-                    <span>
-                      Episode # {episode.episodeNum}
-                      <span className="text-gray-500 font-normal"> {episode.description}</span>
-                    </span>
-                  </a>
+                  <Link href={`/show/episode/${episode.id}`}>
+                    <a className="truncate hover:text-gray-600">
+                      <span>
+                        Episode # {episode.episodeNum}
+                        <span className="text-gray-500 font-normal"> {episode.description}</span>
+                      </span>
+                    </a>
+                  </Link>
                 </div>
               </td>
               <td className="px-6 py-3 text-sm text-gray-500 font-medium">

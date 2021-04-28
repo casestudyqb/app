@@ -2,7 +2,7 @@ import prisma from '../../../lib/prisma'
 import { getSession } from "next-auth/client";
 
 
-// POST /api/post
+// POST /api/episode
 // Required fields in body: title
 // Optional fields in body: content
 export default async function handle(req, res) {
