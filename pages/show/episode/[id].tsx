@@ -25,6 +25,7 @@ export const getServerSideProps: GetServerSideProps = async ({ params }) => {
           id: true,
           title: true,
           draft: true,
+          url: true,
           segmentId: true,
           description: true,
           image: true
@@ -57,6 +58,7 @@ export const getServerSideProps: GetServerSideProps = async ({ params }) => {
 // }
 
 type Props = {
+  id: number
   episodes: EpisodeListProps[];
   description: string;
   show: {
@@ -79,7 +81,7 @@ const Tabs = ({ color, props }) => {
                 className={
                   "text-xs font-bold uppercase px-5 py-3 shadow-lg rounded block leading-normal " +
                   (openTab === 1
-                    ? "text-white bg-" + color + "-600"
+                    ? `text-white bg-${color}-600`
                     : "text-" + color + "-600 bg-white")
                 }
                 onClick={e => {

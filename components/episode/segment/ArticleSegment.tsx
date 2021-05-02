@@ -12,6 +12,7 @@ export type ArticleSegmentProps = {
   description: string;
   episodeNum: number;
   dateAired: string;
+  url: string;
   participants: [{
     image: string
   }];
@@ -47,7 +48,7 @@ const ArticleSegment: React.FC<{ segment: ArticleSegmentProps }> = ({ segment })
   //const authorName = post.author ? post.author.name : "Unknown author";
   return (
     <div className="mt-4">
-    <h1 className="sr-only">Recent questions</h1>
+    <h1 className="sr-only">Create Segment</h1>
     <ul className="space-y-4">
       {questions.map((question) => (
         <li key={question.id} className="bg-white px-4 py-6 shadow sm:p-6 sm:rounded-lg">
@@ -59,7 +60,11 @@ const ArticleSegment: React.FC<{ segment: ArticleSegmentProps }> = ({ segment })
             </div>
             <div
               className="mt-2 text-sm text-gray-700 space-y-4"
-              dangerouslySetInnerHTML={{ __html: question.body }}
+              dangerouslySetInnerHTML={{ __html: segment.description }}
+            />  
+            <div
+               className="mt-2 text-sm text-gray-700 space-y-4"
+              dangerouslySetInnerHTML={{ __html: segment.url }}
             />
             <div className="mt-6 flex justify-between space-x-8">
               <div className="flex space-x-6">

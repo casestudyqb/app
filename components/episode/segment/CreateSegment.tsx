@@ -2,17 +2,17 @@
 import React, { Fragment, useRef, useState } from 'react'
 import Router from 'next/router'
 import { Dialog, Transition } from '@headlessui/react'
-import { CheckIcon } from '@heroicons/react/outline'
-
-const CreateSegment: React.FC = ({props}) => {
-    const [title, setTitle] = useState("");
-    const [description, setDescription] = useState("");
-    const [url, setUrl] = useState("");
-    const [image, setImage] = useState("");
-    const [episodeId, setEpisodeId] = useState("");
-    const [segmentId, setSegmentId] = useState("");
+import ArticleForm from './forms/ArticleForm'
 
 
+type Props = {
+    props: {
+        id: number
+    }
+  };
+
+const CreateSegment: React.FC<Props> = ({ props }) => {
+    const [data, setData] = useState({});
     const [open, setOpen] = useState(false)
 
     const [openTab, setOpenTab] = React.useState(1);
@@ -21,15 +21,15 @@ const CreateSegment: React.FC = ({props}) => {
   
     const submitData = async (e: React.SyntheticEvent) => {
       e.preventDefault();
+
       try {
-        const body = { title, description, url, image, episodeId, segmentId};
-        await fetch(`http://localhost:3000/api/segment`, {
+        const body = data ; // data from Segement Form - Article, Picture, Text, etc.
+        await fetch(`${process.env.API_URL}/segment`, {
           method: "POST",
           headers: { "Content-Type": "application/json" },
           body: JSON.stringify(body),
         });
         setOpen(false)
-        console.log("close", props)
         await Router.push(`/show/episode/${props.id}`);
       } catch (error) {
         console.error(error);
@@ -90,68 +90,38 @@ const CreateSegment: React.FC = ({props}) => {
                         </Dialog.Title>
                         </div>
                     </div>
-                    <form onSubmit={submitData}>
                         <select
                             id="location"
                             name="location"
                             className="mt-1 block w-full pl-3 pr-10 py-2 text-base border-gray-300 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm rounded-md"
                             defaultValue="Think Tank"
+                            onChange={(e)=>setOpenTab(parseInt(e.target.value))}
                         >
-                            <option>Carlito's Rapid Fire</option>
-                            <option>Think Tank</option>
-                            <option>Meme of The Week</option>
+                            <option value={1}>Carlito's RunDown</option>
+                            <option value={2}>Think Tank</option>
+                            <option value={3}>Meme of The Week</option>
                         </select>
                         <div className={openTab === 1 ? "block" : "hidden"} id="link1">
-                            <input
-                            autoFocus
-                            onChange={(e) => setTitle(e.target.value)}
-                            placeholder="Title"
-                            type="text"
-                            value={title}
-                            />
-                            <textarea
-                            cols={30}
-                            onChange={(e) => setDescription(e.target.value)}
-                            placeholder="Description"
-                            rows={8}
-                            value={description}
-                            />
-                            <input
-                            onChange={(e) => setUrl(e.target.value)}
-                            placeholder="url"
-                            type="text"
-                            value={url}
-                            />
-                            <input
-                            onChange={(e) => setImage(e.target.value)}
-                            placeholder="image"
-                            type="text"
-                            value={image}
-                            />
-                            <input
-                            onChange={(e) => setEpisodeId(e.target.value)}
-                            placeholder="episodeId"
-                            type="text"
-                            value={episodeId}
-                            />
-                            <input
-                            onChange={(e) => setSegmentId(e.target.value)}
-                            placeholder="segmentId"
-                            type="text"
-                            value={segmentId}
-                            />
+                            { openTab === 1 ? <ArticleForm 
+                                                submitData={submitData} 
+                                                getData={data => setData(data)}
+                                                closeModal={() => setOpen(false)}
+                                                /> : null 
+                            }
                         </div>
-                        <div>
-                        <label htmlFor="location" className="block text-sm font-medium text-gray-700">
-                            Location
-                        </label>
+                        {/* <div className={openTab === 2 ? "block" : "hidden"} id="link1">
+                            { openTab === 2 ? <ArticleForm /> : null }
                         </div>
+                        <div className={openTab === 3 ? "block" : "hidden"} id="link1">
+                            { openTab === 3 ? <ArticleForm /> : null }
+                        </div> */}
+
                         {/* <input disabled={!description || !title} type="submit" value="Create" />
                         <a className="back" href="#" onClick={() => Router.push("/")}>
                         or Cancel
                         </a> */}
                     
-                        <div className="mt-5 sm:mt-6 sm:grid sm:grid-cols-2 sm:gap-3 sm:grid-flow-row-dense">
+                        {/* <div className="mt-5 sm:mt-6 sm:grid sm:grid-cols-2 sm:gap-3 sm:grid-flow-row-dense">
                             <button
                                 type="submit"
                                 className="w-full inline-flex justify-center rounded-md border border-transparent shadow-sm px-4 py-2 bg-indigo-600 text-base font-medium text-white hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 sm:col-start-1 sm:text-sm"
@@ -166,8 +136,8 @@ const CreateSegment: React.FC = ({props}) => {
                                 >
                                 Cancel
                             </button>
-                        </div>
-                    </form>
+                        </div> */}
+                
                     </div>
                 </Transition.Child>
                 </div>
