@@ -15,7 +15,8 @@ const CreateSegment: React.FC<Props> = ({ props }) => {
     const [data, setData] = useState({});
     const [open, setOpen] = useState(false)
 
-    const [openTab, setOpenTab] = React.useState(1);
+    const [openTab, setOpenTab] = useState(1);
+    const [loading, setLoading] = useState(false);
 
     const cancelButtonRef = useRef()
   
@@ -23,13 +24,15 @@ const CreateSegment: React.FC<Props> = ({ props }) => {
       e.preventDefault();
 
       try {
+        setLoading(true)
         const body = data ; // data from Segement Form - Article, Picture, Text, etc.
-        await fetch(`${process.env.API_URL}/segment`, {
+        await fetch(`${process.env.NEXT_PUBLIC_API_URL}/segment`, {
           method: "POST",
           headers: { "Content-Type": "application/json" },
           body: JSON.stringify(body),
         });
         setOpen(false)
+        setLoading(false)
         await Router.push(`/show/episode/${props.id}`);
       } catch (error) {
         console.error(error);
@@ -106,6 +109,7 @@ const CreateSegment: React.FC<Props> = ({ props }) => {
                                                 submitData={submitData} 
                                                 getData={data => setData(data)}
                                                 closeModal={() => setOpen(false)}
+                                                loading={loading}
                                                 /> : null 
                             }
                         </div>

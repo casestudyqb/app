@@ -10,7 +10,7 @@ const Draft: React.FC = () => {
     e.preventDefault();
     try {
       const body = { title, content };
-      await fetch(`${process.env.API_URL}/post`, {
+      await fetch(`${process.env.NEXT_PUBLIC_API_URL}/post`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify(body),
