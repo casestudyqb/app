@@ -12,7 +12,8 @@ export type EpisodeListProps = {
     name: string;
   }]
   participants: [{
-    image: string
+    image: string;
+    name: string;
   }];
 };
 
@@ -28,7 +29,7 @@ const EpisodeList: React.FC<{ episode: EpisodeListProps }> = ({ episode }) => {
                   <Link href={`/show/episode/${episode.id}`}>
                     <a className="truncate hover:text-gray-600">
                       <span>
-                        Episode # {episode.episodeNum}
+                        {episode.episodeNum}
                         <span className="text-gray-500 font-normal"> {episode.description}</span>
                       </span>
                     </a>
@@ -39,7 +40,7 @@ const EpisodeList: React.FC<{ episode: EpisodeListProps }> = ({ episode }) => {
                 <div className="flex items-center space-x-2">
                   <div className="flex flex-shrink-0 -space-x-1">
                   {episode.participants.map((pics, index)=>(
-                    <img key={index} className="max-w-none h-6 w-6 rounded-full ring-2 ring-white" src={pics.image} alt="Dries Vincent"/>
+                    <img key={index} className="max-w-none h-6 w-6 rounded-full ring-2 ring-white" src={pics.image} alt={pics.name}/>
                   ))}
                   </div>
                   {/* <span className="flex-shrink-0 text-xs leading-5 font-medium">+8</span> */}

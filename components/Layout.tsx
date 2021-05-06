@@ -1,4 +1,5 @@
 import React, {ReactNode} from "react";
+import Image from 'next/image'
 import Link from "next/link";
 import { useRouter } from "next/router";
 import { signOut, useSession } from "next-auth/client";
@@ -45,7 +46,7 @@ const Layout: React.FC<Props> = (props) => {
     profile = [
                 // { name: 'Your Profile', link: "test" }, 
                 // { name: 'Settings', link: "test2" },
-                { name: 'Sign out', link: "/", onClick: () => signOut()}
+                { name: 'Sign out', link: null, onClick: () => signOut()}
               ]
   }
   
@@ -58,16 +59,18 @@ const Layout: React.FC<Props> = (props) => {
               <div className="flex items-center justify-between h-16">
                 <div className="flex items-center">
                   <div className="flex-shrink-0">
-                    <img
-                      className="block lg:hidden h-8 w-auto"
-                      src="https://tailwindui.com/img/logos/workflow-mark-indigo-500.svg"
-                      alt="Workflow"
-                    />
-                    <img
-                      className="hidden lg:block h-8 w-auto"
-                      src="https://tailwindui.com/img/logos/workflow-logo-indigo-500-mark-white-text.svg"
-                      alt="Workflow"
-                    />
+                    <div className="block lg:hidden h-8 w-auto">
+                      <Image 
+                        src="/images/csqb_small_logo.png" 
+                        alt="small csqb logo" width="100" height="38" 
+                      />
+                    </div>
+                    <div className="hidden lg:block h-4 w-auto flex-shrink-0">
+                      <Image
+                        src="/images/csqb_logo.png" 
+                        alt="csqb logo" width="150" height="18" 
+                      />
+                    </div>
                   </div>
                   <div className="hidden md:block">
                     <div className="ml-10 flex items-baseline space-x-4">
@@ -97,6 +100,9 @@ const Layout: React.FC<Props> = (props) => {
                 <div className="hidden md:block">
                   {session ? 
                   <div className="ml-4 flex items-center md:ml-6">
+                    <p className="text-white">
+                      {session.user.name} ({session.user.email})
+                    </p>
                     <button className="bg-gray-800 p-1 rounded-full text-gray-400 hover:text-white focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-offset-gray-800 focus:ring-white">
                       <span className="sr-only">View notifications</span>
                       <BellIcon className="h-6 w-6" aria-hidden="true" />
@@ -135,6 +141,7 @@ const Layout: React.FC<Props> = (props) => {
                                   {({ active }) => (
                                     <a
                                       href={item.link}
+                                      onClick={item.onClick}
                                       className={classNames(
                                         active ? 'bg-gray-100' : '',
                                         'block px-4 py-2 text-sm text-gray-700'
@@ -197,8 +204,8 @@ const Layout: React.FC<Props> = (props) => {
                   )
                 )}
               </div>
-              <div className="pt-4 pb-3 border-t border-gray-700">
-                { session ? <div className="flex items-center px-5">
+              {session ? <div className="pt-4 pb-3 border-t border-gray-700">
+                <div className="flex items-center px-5">
                   <div className="flex-shrink-0">
                     <img
                       className="h-10 w-10 rounded-full"
@@ -214,19 +221,27 @@ const Layout: React.FC<Props> = (props) => {
                     <span className="sr-only">View notifications</span>
                     <BellIcon className="h-6 w-6" aria-hidden="true" />
                   </button>
-                </div> : null}
+                </div>
                 <div className="mt-3 px-2 space-y-1">
                   {profile.map((item) => (
-                    <Link href={item.link} key={item.name}>
                       <a onClick={item.onClick}
                         className="block px-3 py-2 rounded-md text-base font-medium text-gray-400 hover:text-white hover:bg-gray-700"
                       >
                         {item.name}
                       </a>
-                    </Link>
+                   
                   ))}
                 </div>
+              </div> : 
+              <div className="mt-3 px-2 space-y-1">
+                <Link href="/api/auth/signin">
+                  <a data-active={isActive("/signup")} className="block px-3 py-2 rounded-md text-base font-medium text-white hover:text-white hover:bg-gray-700">
+                    Log In 
+                  </a>
+                </Link>
               </div>
+
+              }
             </Disclosure.Panel>
           </>
         )}
