@@ -13,6 +13,34 @@ export default function ArticleForm({submitData, closeModal, getData, loading}) 
 
   const cancelButtonRef = useRef()
 
+
+  const scrapper = async (e) => {
+    setUrl(e.target.value)
+
+    if (e.nativeEvent.inputType === "insertFromPaste") {
+        setDescription("Loading Description...")
+        setTitle("Loading Title...")
+
+        const body = { url: e.target.value }
+
+        await fetch(`${process.env.NEXT_PUBLIC_API_URL}/scrape`, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(body),
+        })
+        .then(res=>res.json())
+        .then(data => {
+            console.log('Success:', data);
+            setDescription(data.ogDescription)
+            setTitle(data.ogTitle)
+            setImage(data.ogImage.url)
+        })
+        .catch((error) => {
+        console.error('Error:', error);
+        }); 
+    }
+  };
+
   return (
     <form onSubmit={submitData}>
      <div>
@@ -29,7 +57,7 @@ export default function ArticleForm({submitData, closeModal, getData, loading}) 
         
              className="flex-1 min-w-0 block w-full px-3 py-2 rounded-none rounded-r-md focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm border-gray-300"
              placeholder="www.example.com"
-             onChange={(e) => setUrl(e.target.value)}
+             onChange={scrapper}
              value={url}
              />
          </div>
@@ -62,6 +90,13 @@ export default function ArticleForm({submitData, closeModal, getData, loading}) 
              value={description}
              />
          </div>
+     </div>
+     <div className="sm:col-span-6">
+        {image ? 
+            <div className="aspect-w-3 aspect-h-2">
+                <img className="object-cover shadow-lg rounded-lg" src={image} alt="Article Image" />
+            </div>
+        : null }
      </div>
      {/* <input
      onChange={(e) => setImage(e.target.value)}

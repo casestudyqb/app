@@ -33,7 +33,8 @@ export const getServerSideProps: GetServerSideProps = async ({ params }) => {
       },
       show: {
         select: {
-          name: true
+          name: true,
+          picUrl: true
         }
       }
     }
@@ -62,7 +63,8 @@ type Props = {
   episodes: EpisodeListProps[];
   description: string;
   show: {
-    name: string
+    name: string;
+    picUrl: string;
   };
 };
 
@@ -169,7 +171,7 @@ const EpisodePage: React.FC<Props> = (props) => {
           <div className="sm:flex sm:items-center sm:justify-between">
             <div className="sm:flex sm:space-x-5">
               <div className="flex-shrink-0">
-                <img className="mx-auto h-20 w-20 rounded-full" src="https://images.unsplash.com/photo-1550525811-e5869dd03032?ixlib=rb-1.2.1&ixqx=4bjJsNgMdl&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=facearea&facepad=2&w=256&h=256&q=80" alt="" />
+                <img className="mx-auto h-20 w-20 rounded-full" src={props.show.picUrl} alt="" />
               </div>
               <div className="mt-4 text-center sm:mt-0 sm:pt-1 sm:text-left">
                 {/* <p className="text-sm font-medium text-gray-600">Welcome back,</p> */}

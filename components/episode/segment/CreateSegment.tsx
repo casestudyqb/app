@@ -7,7 +7,7 @@ import ArticleForm from './forms/ArticleForm'
 
 type Props = {
     props: {
-        id: number
+        id: number;
     }
   };
 
@@ -38,7 +38,7 @@ const CreateSegment: React.FC<Props> = ({ props }) => {
         console.error(error);
       }
     };
-  
+
     return (
       <>
         <button 
