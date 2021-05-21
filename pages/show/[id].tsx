@@ -18,18 +18,18 @@ export const getServerSideProps: GetServerSideProps = async ({ params }) => {
       id: true,
       name: true,
       description: true,
-        episodes: {
-          select: {
-            id: true,
-            description: true,
-            dateAired: true,
-            participants: {
-              select: {
-                image: true
-              }
+      episodes: {
+        select: {
+          id: true,
+          description: true,
+          dateAired: true,
+          participants: {
+            select: {
+              image: true
             }
           }
         }
+      }
     }
   });
   return {

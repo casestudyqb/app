@@ -224,7 +224,7 @@ const Layout: React.FC<Props> = (props) => {
                 </div>
                 <div className="mt-3 px-2 space-y-1">
                   {profile.map((item) => (
-                      <a onClick={item.onClick}
+                      <a onClick={item.onClick} key={item.name}
                         className="block px-3 py-2 rounded-md text-base font-medium text-gray-400 hover:text-white hover:bg-gray-700"
                       >
                         {item.name}

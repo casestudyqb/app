@@ -8,12 +8,24 @@ import {
 
 export type TextSegmentProps = {
   id: number;
+  title: string;
   description: string;
   episodeNum: number;
   dateAired: string;
+  image: string;
+  url: string;
+  segmentType: {
+    name: string
+  };
   participants: [{
     image: string
   }];
+  createdBy: [
+    {
+      name: string;
+      image: string;
+    }
+  ];
 };
 
 const questions = [
@@ -46,19 +58,26 @@ const TextSegment: React.FC<{ segment: TextSegmentProps }> = ({ segment }) => {
   //const authorName = post.author ? post.author.name : "Unknown author";
   return (
     <div className="mt-4">
-    <h1 className="sr-only">Recent questions</h1>
+    <h1 className="sr-only">Create Segment</h1>
     <ul className="space-y-4">
       {questions.map((question) => (
         <li key={question.id} className="bg-white px-4 py-6 shadow sm:p-6 sm:rounded-lg">
           <article aria-labelledby={'question-title-' + question.id}>
             <div>
+              <h2  className="mt-4 text-base font-small text-red-900">
+                  {segment.segmentType.name}
+              </h2>
               <h2 id={'question-title-' + question.id} className="mt-4 text-base font-medium text-gray-900">
-                {question.title}
+                {segment.title}
               </h2>
             </div>
             <div
               className="mt-2 text-sm text-gray-700 space-y-4"
-              dangerouslySetInnerHTML={{ __html: question.body }}
+              dangerouslySetInnerHTML={{ __html: segment.description }}
+            />  
+            <div
+               className="mt-2 text-sm text-gray-700 space-y-4"
+              dangerouslySetInnerHTML={{ __html: segment.url }}
             />
             <div className="mt-6 flex justify-between space-x-8">
               <div className="flex space-x-6">
@@ -84,23 +103,21 @@ const TextSegment: React.FC<{ segment: TextSegmentProps }> = ({ segment }) => {
                   </button>
                 </span>
               </div>
-              <div className="flex text-sm">
-                <div className="flex text-sm space-x-2">
-                  <div className="flex-shrink-0">
-                      <img className="h-10 w-10 rounded-full" src={question.author.imageUrl} alt="" />
-                  </div>
-                  <div className="min-w-0 flex-1">
-                    <p className="text-sm font-medium text-gray-900">
-                      <a href={question.author.href} className="hover:underline">
-                        Added by: {question.author.name}
-                      </a>
-                    </p>
-                    <p className="text-sm text-gray-500">
-                      <a href={question.href} className="hover:underline">
-                        <time dateTime={question.datetime}>{question.date}</time>
-                      </a>
-                    </p>
-                  </div>
+              <div className="flex text-sm space-x-2">
+                <div className="flex-shrink-0">
+                    <img className="h-10 w-10 rounded-full" src={segment.createdBy[0].image} alt="" />
+                </div>
+                <div className="min-w-0 flex-1">
+                  <p className="text-sm font-medium text-gray-900">
+                    <a href={question.author.href} className="hover:underline">
+                      Added by: {segment.createdBy[0].name}
+                    </a>
+                  </p>
+                  <p className="text-sm text-gray-500">
+                    <a href={question.href} className="hover:underline">
+                      <time dateTime={question.datetime}></time>
+                    </a>
+                  </p>
                 </div>
               </div>
             </div>

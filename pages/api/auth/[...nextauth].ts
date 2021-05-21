@@ -9,7 +9,7 @@ const authHandler: NextApiHandler = (req, res) => NextAuth(req, res, options);
 export default authHandler;
 
 const options = {
-  site: process.env.NEXTAUTH_URL || 'http://localhost:3000',
+  site: process.env.NEXTAUTH_URL,
   // pages: {
   //   signIn: '/auth/signin',
   //   signOut: '/auth/signout',
@@ -60,6 +60,12 @@ const options = {
     //   }
     // })
   ],
+  callbacks: {
+    session: async (session, user) => {
+      session.userId = user.id;    
+      return Promise.resolve(session);
+    }
+  },
   adapter: Adapters.Prisma.Adapter({ prisma })
   // secret: process.env.SECRET,
 };

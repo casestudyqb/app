@@ -3,7 +3,8 @@ import React, { Fragment, useRef, useState } from 'react'
 import Router from 'next/router'
 import { Dialog, Transition } from '@headlessui/react'
 import ArticleForm from './forms/ArticleForm'
-
+import TextForm from './forms/TextForm'
+import PictureForm from './forms/PictureForm'
 
 type Props = {
     props: {
@@ -103,23 +104,57 @@ const CreateSegment: React.FC<Props> = ({ props }) => {
                             <option value={1}>Carlito's RunDown</option>
                             <option value={2}>Think Tank</option>
                             <option value={3}>Meme of The Week</option>
+                            <option value={4}>Corporate Death Penalty</option>
                         </select>
                         <div className={openTab === 1 ? "block" : "hidden"} id="link1">
                             { openTab === 1 ? <ArticleForm 
                                                 submitData={submitData} 
-                                                getData={data => setData(data)}
+                                                getData={data => {
+                                                    data.segmentId = openTab
+                                                    console.log("data", data)
+                                                    setData(data)
+                                                }}
                                                 closeModal={() => setOpen(false)}
                                                 loading={loading}
                                                 /> : null 
                             }
                         </div>
-                        {/* <div className={openTab === 2 ? "block" : "hidden"} id="link1">
-                            { openTab === 2 ? <ArticleForm /> : null }
+                        <div className={openTab === 2 ? "block" : "hidden"} id="link1">
+                            { openTab === 2 ? <TextForm 
+                                                    submitData={submitData} 
+                                                    getData={data => {
+                                                        data.segmentId = openTab
+                                                        console.log("data", data)
+                                                        setData(data)
+                                                    }}
+                                                    closeModal={() => setOpen(false)}
+                                                    loading={loading}
+                                                /> : null }
                         </div>
                         <div className={openTab === 3 ? "block" : "hidden"} id="link1">
-                            { openTab === 3 ? <ArticleForm /> : null }
-                        </div> */}
-
+                            { openTab === 3 ? <PictureForm 
+                                                    submitData={submitData} 
+                                                    getData={data => {
+                                                        data.segmentId = openTab
+                                                        console.log("data", data)
+                                                        setData(data)
+                                                    }}
+                                                    closeModal={() => setOpen(false)}
+                                                    loading={loading}
+                                                /> : null }
+                        </div>
+                        <div className={openTab === 4 ? "block" : "hidden"} id="link1">
+                            { openTab === 4 ? <TextForm 
+                                                    submitData={submitData} 
+                                                    getData={data => {
+                                                        data.segmentId = openTab
+                                                        console.log("data", data)
+                                                        setData(data)
+                                                    }}
+                                                    closeModal={() => setOpen(false)}
+                                                    loading={loading}
+                                                /> : null }
+                        </div>
                         {/* <input disabled={!description || !title} type="submit" value="Create" />
                         <a className="back" href="#" onClick={() => Router.push("/")}>
                         or Cancel

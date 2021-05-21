@@ -12,10 +12,20 @@ export type ArticleSegmentProps = {
   description: string;
   episodeNum: number;
   dateAired: string;
+  image: string;
   url: string;
+  segmentType: {
+    name: string
+  };
   participants: [{
     image: string
   }];
+  createdBy: [
+    {
+      name: string;
+      image: string;
+    }
+  ];
 };
 
 const questions = [
@@ -54,6 +64,9 @@ const ArticleSegment: React.FC<{ segment: ArticleSegmentProps }> = ({ segment })
         <li key={question.id} className="bg-white px-4 py-6 shadow sm:p-6 sm:rounded-lg">
           <article aria-labelledby={'question-title-' + question.id}>
             <div>
+              <h2  className="mt-4 text-base font-small text-red-900">
+                  {segment.segmentType.name}
+              </h2>
               <h2 id={'question-title-' + question.id} className="mt-4 text-base font-medium text-gray-900">
                 {segment.title}
               </h2>
@@ -92,19 +105,24 @@ const ArticleSegment: React.FC<{ segment: ArticleSegmentProps }> = ({ segment })
               </div>
               <div className="flex text-sm space-x-2">
                 <div className="flex-shrink-0">
-                    <img className="h-10 w-10 rounded-full" src={question.author.imageUrl} alt="" />
+                    <img className="h-10 w-10 rounded-full" src={segment.createdBy[0].image} alt="" />
                 </div>
                 <div className="min-w-0 flex-1">
                   <p className="text-sm font-medium text-gray-900">
                     <a href={question.author.href} className="hover:underline">
-                      Added by: {question.author.name}
+                      Added by: {segment.createdBy[0].name}
                     </a>
                   </p>
                   <p className="text-sm text-gray-500">
                     <a href={question.href} className="hover:underline">
-                      <time dateTime={question.datetime}>{question.date}</time>
+                      <time dateTime={question.datetime}></time>
                     </a>
                   </p>
+                </div>
+              </div>
+              <div className="flex text-sm space-x-2">
+                <div className="flex-wrap">
+                    <img className="h-11 w-11" src={segment.image} alt="" />
                 </div>
               </div>
             </div>

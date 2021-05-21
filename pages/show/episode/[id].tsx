@@ -26,9 +26,21 @@ export const getServerSideProps: GetServerSideProps = async ({ params }) => {
           title: true,
           draft: true,
           url: true,
-          segmentId: true,
+          segmentId:true,
+          segmentType: {
+            select: {
+              name: true
+            }
+          },
           description: true,
-          image: true
+          image: true,
+          //createdAt: true,
+          createdBy: {
+            select:{
+              name: true,
+              image: true
+            }
+          }
         }
       },
       show: {
@@ -125,20 +137,20 @@ const Tabs = ({ color, props }) => {
                   if (data.segmentId === 1 && data.draft === false) {
                     return <ArticleSegment key={data.id} segment={data} />
                   } else if (data.segmentId === 2 && data.draft === false) {
-                    return <PictureSegment key={data.id} segment={data} />
-                  } else if (data.segmentId === 3 && data.draft === false) {
                     return <TextSegment key={data.id} segment={data} />
+                  } else if (data.segmentId === 3 && data.draft === false) {
+                    return <PictureSegment key={data.id} segment={data} />
                   }
                 })}
                 </div>
-                <div className={openTab === 2 ? "block" : "hidden"} id="link2">
+                <div className={openTab === 2 ? "block" : "hidden"} id="link2">{console.log(props.segments)}
                   {props.segments.map(data => {
                     if (data.segmentId === 1 && data.draft === true) {
                       return <ArticleSegment key={data.id} segment={data} />
                     } else if (data.segmentId === 2 && data.draft === true) {
-                      return <PictureSegment key={data.id} segment={data} />
-                    } else if (data.segmentId === 3 && data.draft === true) {
                       return <TextSegment key={data.id} segment={data} />
+                    } else if (data.segmentId === 3 && data.draft === true) {
+                      return <PictureSegment key={data.id} segment={data} />
                     }
                   })}
                 </div>
