@@ -126,6 +126,7 @@ const Tabs = ({ color, props }) => {
                 role="tablist"
               >
                 <i className="fas fa-cog text-base mr-1"></i>  Draft
+                <span className="inline-flex items-center justify-center px-2 py-1 text-xs font-bold leading-none text-red-100 bg-red-600 rounded-full">{props.segments.length}</span>
               </a>
             </li>
           </ul>
