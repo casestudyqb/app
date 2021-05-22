@@ -20,7 +20,7 @@ export default async function handle(req, res) {
       url,
       image,
       starRating: 1,//deleate and add default 0 value
-      episode: { connect: { id: 1 }},
+      episode: { connect: { id: episodeId }},
       segmentType: { connect: { id: segmentId }},
       createdBy: { connect: { id: Number(userId)}}
     },

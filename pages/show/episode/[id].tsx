@@ -143,7 +143,7 @@ const Tabs = ({ color, props }) => {
                   }
                 })}
                 </div>
-                <div className={openTab === 2 ? "block" : "hidden"} id="link2">{console.log(props.segments)}
+                <div className={openTab === 2 ? "block" : "hidden"} id="link2">
                   {props.segments.map(data => {
                     if (data.segmentId === 1 && data.draft === true) {
                       return <ArticleSegment key={data.id} segment={data} />

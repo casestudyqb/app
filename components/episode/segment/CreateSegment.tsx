@@ -111,7 +111,7 @@ const CreateSegment: React.FC<Props> = ({ props }) => {
                                                 submitData={submitData} 
                                                 getData={data => {
                                                     data.segmentId = openTab
-                                                    console.log("data", data)
+                                                    data.episodeId = props.id
                                                     setData(data)
                                                 }}
                                                 closeModal={() => setOpen(false)}
@@ -124,7 +124,7 @@ const CreateSegment: React.FC<Props> = ({ props }) => {
                                                     submitData={submitData} 
                                                     getData={data => {
                                                         data.segmentId = openTab
-                                                        console.log("data", data)
+                                                        data.episodeId = props.id
                                                         setData(data)
                                                     }}
                                                     closeModal={() => setOpen(false)}
@@ -136,7 +136,7 @@ const CreateSegment: React.FC<Props> = ({ props }) => {
                                                     submitData={submitData} 
                                                     getData={data => {
                                                         data.segmentId = openTab
-                                                        console.log("data", data)
+                                                        data.episodeId = props.id
                                                         setData(data)
                                                     }}
                                                     closeModal={() => setOpen(false)}
@@ -145,10 +145,10 @@ const CreateSegment: React.FC<Props> = ({ props }) => {
                         </div>
                         <div className={openTab === 4 ? "block" : "hidden"} id="link1">
                             { openTab === 4 ? <TextForm 
-                                                    submitData={submitData} 
+                                                    submitData={ submitData} 
                                                     getData={data => {
                                                         data.segmentId = openTab
-                                                        console.log("data", data)
+                                                        data.episodeId = props.id
                                                         setData(data)
                                                     }}
                                                     closeModal={() => setOpen(false)}

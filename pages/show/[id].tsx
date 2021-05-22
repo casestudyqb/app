@@ -7,6 +7,7 @@ import { PostProps } from "../../components/Post";
 import EpisodeList, {EpisodeListProps} from "../../components/episode/EpisodeList";
 import prisma from '../../lib/prisma'
 import { useSession } from "next-auth/client";
+import CreateEpisode from "../../components/episode/CreateEpisode";
 
 
 export const getServerSideProps: GetServerSideProps = async ({ params }) => {
@@ -70,6 +71,9 @@ const EpisodeListPage: React.FC<Props> = (props) => {
   return (
     <Layout>
       <div className="hidden mt-8 sm:block">
+        <div className="mt-5 flex justify-center sm:mt-0">
+          <CreateEpisode props={props}/>
+        </div>
         <div className="align-middle inline-block min-w-full border-b border-gray-200">
           <table className="min-w-full">
             <thead>

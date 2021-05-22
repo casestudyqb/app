@@ -6,14 +6,15 @@ import { getSession } from "next-auth/client";
 // Required fields in body: title
 // Optional fields in body: content
 export default async function handle(req, res) {
-  const { title, content } = req.body;
+  const { dateAired, description, episodeNum, showId } = req.body;
 
   const session = await getSession({ req });
-  const result = await prisma.post.create({
+  const result = await prisma.episode.create({
     data: {
-      title: title,
-      content: content,
-      author: { connect: { email: session?.user?.email } },
+      episodeNum: 1,
+      showId,
+      dateAired, 
+      description
     },
   });
   res.json(result);

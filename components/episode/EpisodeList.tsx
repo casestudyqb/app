@@ -2,6 +2,7 @@ import React from "react";
 import Link from 'next/link'
 import Router from "next/router";
 //import ReactMarkdown from "react-markdown";
+import { format, compareAsc } from 'date-fns'
 
 export type EpisodeListProps = {
   id: number;
@@ -47,7 +48,7 @@ const EpisodeList: React.FC<{ episode: EpisodeListProps }> = ({ episode }) => {
                 </div>
               </td>
               <td className="hidden md:table-cell px-6 py-3 whitespace-nowrap text-sm text-gray-500 text-right">
-                {episode.dateAired}
+                {format(new Date(episode.dateAired), 'MM/dd/yyyy pp')}
               </td>
               <td className="pr-6">
                 <div className="relative flex justify-end items-center">
