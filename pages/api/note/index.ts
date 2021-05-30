@@ -5,8 +5,6 @@ import { getSession } from "next-auth/client";
 export default async function handle(req, res) {
   const { content, segmentId, segmentNoteId } = req.body;
 
-  console.log("content", content, "segID", segmentId, "segNoteId", segmentNoteId)
-
   const { userId } = await getSession({ req });
   const result = await prisma.segmentNote.upsert({
     where: {id: segmentNoteId},

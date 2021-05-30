@@ -133,7 +133,7 @@ const Tabs = ({ color, props }) => {
                 role="tablist"
               >
                 <i className="fas fa-cog text-base mr-1"></i>  Draft
-                {props.segments.length > 0 ? <span className="inline-flex items-center justify-center px-2 py-1 text-xs font-bold leading-none text-red-100 bg-red-600 rounded-full">{props.segments.length}</span> : null }
+                {props.segments.length > 0 ? <span className="inline-flex items-center justify-center px-2 py-1 text-xs font-bold leading-none text-red-100 bg-red-600 rounded-full">{props.segments.filter(draft=> draft.draft === true).length}</span> : null }
               </a>
             </li>
           </ul>

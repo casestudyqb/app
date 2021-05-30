@@ -39,7 +39,7 @@ const questions = [
   {
     id: '81614',
     likes: '29',
-    replies: '11',
+    replies: '',
     views: '2.7k',
     author: {
       name: 'Dries Vincent',
@@ -73,8 +73,6 @@ const ArticleSegment: React.FC<{ segment: ArticleSegmentProps }> = ({ segment })
   const submitData = async (e: React.SyntheticEvent) => {
     e.preventDefault();
 
-    console.log("test", content, segment.id, "note", note, segment.segmentNote)
-
     try {
       const body = { segmentId: segment.id, content, segmentNoteId: typeof note !== "undefined" ? note.id : -1 };
       await fetch(`${process.env.NEXT_PUBLIC_API_URL}/note`, {
@@ -89,7 +87,7 @@ const ArticleSegment: React.FC<{ segment: ArticleSegmentProps }> = ({ segment })
 
   return (
     !open ? 
-      <div className="mt-4">{console.log(!!segment.segmentNote, typeof note, segment.segmentNote)}
+      <div className="mt-4">
         <h1 className="sr-only">{segment.segmentType.name}</h1>
         <ul className="space-y-4">
           {questions.map((question) => (
