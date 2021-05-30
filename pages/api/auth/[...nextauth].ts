@@ -21,6 +21,10 @@ const options = {
       Providers.Google({
         clientId: process.env.GOOGLE_CLIENT_ID,
         clientSecret: process.env.GOOGLE_CLIENT_SECRET
+      }),
+      Providers.Twitter({
+        clientId: process.env.TWITTER_ID,
+        clientSecret: process.env.TWITTER_SECRET
       })
     // Providers.Email({
     //   server: {

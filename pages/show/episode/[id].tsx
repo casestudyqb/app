@@ -27,6 +27,13 @@ export const getServerSideProps: GetServerSideProps = async ({ params }) => {
           draft: true,
           url: true,
           segmentId:true,
+          segmentNote: {
+            select: {
+              id: true,
+              noteText: true,
+              authorId: true
+            }
+          },
           segmentType: {
             select: {
               name: true
@@ -126,7 +133,7 @@ const Tabs = ({ color, props }) => {
                 role="tablist"
               >
                 <i className="fas fa-cog text-base mr-1"></i>  Draft
-                <span className="inline-flex items-center justify-center px-2 py-1 text-xs font-bold leading-none text-red-100 bg-red-600 rounded-full">{props.segments.length}</span>
+                {props.segments.length > 0 ? <span className="inline-flex items-center justify-center px-2 py-1 text-xs font-bold leading-none text-red-100 bg-red-600 rounded-full">{props.segments.length}</span> : null }
               </a>
             </li>
           </ul>
@@ -199,7 +206,7 @@ const EpisodePage: React.FC<Props> = (props) => {
         </div>
       </div>
       <main className="lg:col-span-9 xl:col-span-6">
-        <Tabs color="purple" props={props} />
+        <Tabs color="indigo" props={props} />
       </main>
     </Layout>
   );
