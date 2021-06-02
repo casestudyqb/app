@@ -3,10 +3,17 @@ module.exports = {
   darkMode: false, // or 'media' or 'class'
   theme: {
     extend: true,
-    content: ["./pages/**/*.js"]
+    content: ["./pages/**/*.js"],
+    cursor: {
+      default: 'default',
+    }
   },
   variants: {
-    extend: {},
+    extend: {
+      opacity: ['disabled'],
+      cursor: 'disabled'
+    },
+    
   },
   plugins: [
     require('@tailwindcss/forms'),

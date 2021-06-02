@@ -85,6 +85,22 @@ const ArticleSegment: React.FC<{ segment: ArticleSegmentProps }> = ({ segment })
     }
   };
 
+  const submitLike = async (e: React.SyntheticEvent) => {
+    e.preventDefault();
+
+    // try {
+    //   const body = { segmentId: segment.id, content, segmentNoteId: typeof note !== "undefined" ? note.id : -1 };
+    //   await fetch(`${process.env.NEXT_PUBLIC_API_URL}/note`, {
+    //     method: "POST",
+    //     headers: { "Content-Type": "application/json" },
+    //     body: JSON.stringify(body),
+    //   });
+    // } catch (error) {
+    //   console.error(error);
+    // }
+  };
+
+
   return (
     !open ? 
       <div className="mt-4">
@@ -112,7 +128,10 @@ const ArticleSegment: React.FC<{ segment: ArticleSegmentProps }> = ({ segment })
                 <div className="mt-6 flex justify-between space-x-8">
                   <div className="flex space-x-6">
                     <span className="inline-flex items-center text-sm">
-                      <button className="inline-flex space-x-2 text-gray-400 hover:text-gray-500">
+                      <button 
+                        className="inline-flex space-x-2 text-gray-400 hover:text-gray-500"
+                        onClick={submitLike}
+                      >
                         <ThumbUpIcon className="h-5 w-5" aria-hidden="true" />
                         <span className="font-medium text-gray-900">{question.likes}</span>
                         <span className="sr-only">likes</span>
@@ -185,11 +204,30 @@ const ArticleSegment: React.FC<{ segment: ArticleSegmentProps }> = ({ segment })
                   value={content}
                 />
               </div>
-              <div>
-                <input disabled={!content} type="submit" value="Create" />
-                <a className="back" href="#" onClick={() => setOpen(false)}>
+              <div className="mt-5 sm:mt-6 sm:grid sm:grid-cols-2 sm:gap-3 sm:grid-flow-row-dense">
+                {/* <input disabled={!content} type="submit" value="Create" /> */}
+                <button
+                    // onClick={()=> getData({title, description, url, image, episodeId, segmentId})}
+                    disabled={!content}
+                    type="submit"
+                    className="w-full inline-flex justify-center rounded-md border border-transparent shadow-sm px-4 py-2 bg-indigo-600 text-base font-medium text-white hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 sm:col-start-1 sm:text-sm disabled:opacity-50 disabled:cursor-default"
+                    >
+                  {/* { loading ? <svg className="animate-spin -ml-1 mr-3 h-5 w-5 text-white" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+                  <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4"></circle>
+                  <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
+                  </svg> : null } */}
+                      Create 
+                </button>
+                <button
+                    type="button"
+                    className="mt-3 w-full inline-flex justify-center rounded-md border border-gray-300 shadow-sm px-4 py-2 bg-white text-base font-medium text-gray-700 hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 sm:mt-0 sm:col-start-2 sm:text-sm"
+                    onClick={() => setOpen(false)}
+                    >
+                    Cancel
+                </button>
+                {/* <a className="back" href="#" onClick={() => setOpen(false)}>
                   or Cancel
-                </a>
+                </a> */}
               </div>
             </form>
             <div className="mt-6 flex justify-between space-x-8">
