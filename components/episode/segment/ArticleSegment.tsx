@@ -2,10 +2,8 @@ import React, {useState} from "react";
 import { useSession } from "next-auth/client";
 import {
   ChatAltIcon,
-  EyeIcon,
   ThumbUpIcon,
 } from '@heroicons/react/solid'
-import { notEqual } from "node:assert";
 
 
 export type ArticleSegmentProps = {
@@ -16,6 +14,10 @@ export type ArticleSegmentProps = {
   dateAired: string;
   image: string;
   url: string;
+  likes: [{
+    userId: number;
+    length: number;
+  }]
   segmentType: {
     name: string
   };
@@ -38,7 +40,7 @@ export type ArticleSegmentProps = {
 const questions = [
   {
     id: '81614',
-    likes: '29',
+    likes: '',
     replies: '',
     views: '2.7k',
     author: {
@@ -63,9 +65,10 @@ function classNames(...classes) {
 
 const ArticleSegment: React.FC<{ segment: ArticleSegmentProps }> = ({ segment }) => {
   const [session,loading]= useSession();
-  const note =  segment.segmentNote.find((e) => e.authorId === session.userId )
+  const note =  segment.segmentNote.find(e => e.authorId === session.userId )
   const [open, setOpen] = useState(false)
-  //const [content, setContent] = useState("");
+  const [like, setLike] = useState(segment.likes.filter(e => e.userId === session.userId ))
+  const [totalLikes, setTotalLikes] = useState(segment.likes)
   const [content, setContent] = !note ? useState(""): useState(note.noteText);
 
 
@@ -88,16 +91,23 @@ const ArticleSegment: React.FC<{ segment: ArticleSegmentProps }> = ({ segment })
   const submitLike = async (e: React.SyntheticEvent) => {
     e.preventDefault();
 
-    // try {
-    //   const body = { segmentId: segment.id, content, segmentNoteId: typeof note !== "undefined" ? note.id : -1 };
-    //   await fetch(`${process.env.NEXT_PUBLIC_API_URL}/note`, {
-    //     method: "POST",
-    //     headers: { "Content-Type": "application/json" },
-    //     body: JSON.stringify(body),
-    //   });
-    // } catch (error) {
-    //   console.error(error);
-    // }
+    try {
+      const body = { segmentId: segment.id, likes: segment.likes };
+      await fetch(`${process.env.NEXT_PUBLIC_API_URL}/like`, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(body),
+      }).then((response) => {
+        return response.json();
+      })
+      .then((json) => {
+        setTotalLikes(json)
+        setLike(json.filter(e => e.userId === session.userId ))
+      });
+    } catch (error) {
+      console.error(error);
+    }
+
   };
 
 
@@ -132,8 +142,8 @@ const ArticleSegment: React.FC<{ segment: ArticleSegmentProps }> = ({ segment })
                         className="inline-flex space-x-2 text-gray-400 hover:text-gray-500"
                         onClick={submitLike}
                       >
-                        <ThumbUpIcon className="h-5 w-5" aria-hidden="true" />
-                        <span className="font-medium text-gray-900">{question.likes}</span>
+                        { like.length > 0 ? <ThumbUpIcon className="h-5 w-5 text-indigo-600" aria-hidden="true" /> : <ThumbUpIcon className="h-5 w-5" aria-hidden="true" /> }
+                        <span className="font-medium text-gray-900">{totalLikes.length}</span>
                         <span className="sr-only">likes</span>
                       </button>
                     </span>
@@ -235,7 +245,7 @@ const ArticleSegment: React.FC<{ segment: ArticleSegmentProps }> = ({ segment })
                 <span className="inline-flex items-center text-sm">
                   <button className="inline-flex space-x-2 text-gray-400 hover:text-gray-500">
                     <ThumbUpIcon className="h-5 w-5" aria-hidden="true" />
-                    <span className="font-medium text-gray-900">{question.likes}</span>
+                    <span className="font-medium text-gray-900">{segment.likes.length}</span>
                     <span className="sr-only">likes</span>
                   </button>
                 </span>

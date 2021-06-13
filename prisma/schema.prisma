@@ -27,6 +27,7 @@ model User {
   image         String?
   createdAt     DateTime      @default(now()) @map("created_at")
   updatedAt     DateTime      @updatedAt @map("updated_at")
+  likes         Like?
   posts         Post[]
   segmentNotes  SegmentNote[]
   episodes      Episode[]     @relation("EpisodeParticipants")
@@ -77,6 +78,16 @@ model VerificationRequest {
   @@map("verification_requests")
 }
 
+model Like {
+  id        Int      @id @default(autoincrement())
+  userId    Int?     
+  segmentId Int      
+  createdAt DateTime @default(now()) @map("created_at")
+  updatedAt DateTime @default(now()) @map("updated_at")
+  segment   Segment  @relation(fields: [segmentId], references: [id])
+  user      User?    @relation(fields: [userId], references: [id])
+}
+
 model Show {
   id          Int       @id @default(autoincrement())
   name        String
@@ -117,6 +128,7 @@ model Segment {
   siteName      String          @default("SiteName")
   episode       Episode         @relation(fields: [episodeId], references: [id])
   segmentType   SegmentType     @relation(fields: [segmentId], references: [id])
+  likes         Like?
   segmentNote   SegmentNote[]
   segmentPicUrl SegmentPicUrl[]
   createdBy     User[]          @relation("SegmentCreatedBy")

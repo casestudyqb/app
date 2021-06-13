@@ -1,8 +1,7 @@
 import React from "react";
 import { GetServerSideProps } from "next";
 import Layout from "../../../components/Layout";
-import Router from "next/router";
-import EpisodeList, {EpisodeListProps} from "../../../components/episode/EpisodeList";
+import {EpisodeListProps} from "../../../components/episode/EpisodeList";
 import prisma from '../../../lib/prisma'
 import { useSession } from "next-auth/client";
 import ArticleSegment from "../../../components/episode/segment/ArticleSegment"
@@ -27,6 +26,12 @@ export const getServerSideProps: GetServerSideProps = async ({ params }) => {
           draft: true,
           url: true,
           segmentId:true,
+          likes: {
+            select: {
+              id: true,
+              userId: true
+            }
+          },
           segmentNote: {
             select: {
               id: true,
