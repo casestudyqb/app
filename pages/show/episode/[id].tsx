@@ -26,7 +26,7 @@ export const getServerSideProps: GetServerSideProps = async ({ params }) => {
           draft: true,
           url: true,
           segmentId:true,
-          likes: {
+          like: {
             select: {
               id: true,
               userId: true

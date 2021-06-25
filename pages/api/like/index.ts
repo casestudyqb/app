@@ -22,14 +22,23 @@ export default async function handle(req, res) {
   //     }
   // })
 
-  const getLikes = await prisma.like.groupBy({
-    by: ['segmentId', 'userId', 'createdAt', 'id'],
+  const getLikes = await prisma.like.groupBy({ 
+    by: ['segmentId', 'userId', 'created_at', 'id'],
     where: {
       segmentId: {
         in: segmentId
       }
     }
-  })
+   })
+
+  // const getLikes = await prisma.like.groupBy({
+  //   by: ['segmentId', 'userId', 'createdAt', 'id'],
+  //   where: {
+  //     segmentId: {
+  //       in: segmentId
+  //     }
+  //   }
+  // })
 
   const oneLike = getLikes.filter(oneLike => oneLike.userId === userId)
 
@@ -39,7 +48,7 @@ export default async function handle(req, res) {
           id: oneLike[0].id
         }
       }).then(async () => await prisma.like.groupBy({
-        by: ['segmentId', 'userId', 'createdAt', 'id'],
+        by: ['segmentId', 'userId', 'created_at', 'id'],
         where: {
           segmentId: {
             in: segmentId
@@ -57,7 +66,7 @@ export default async function handle(req, res) {
           userId: Number(userId)
         }
     }).then(async () => await prisma.like.groupBy({
-      by: ['segmentId', 'userId', 'createdAt', 'id'],
+      by: ['segmentId', 'userId', 'created_at', 'id'],
       where: {
         segmentId: {
           in: segmentId

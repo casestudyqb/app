@@ -14,7 +14,7 @@ export type ArticleSegmentProps = {
   dateAired: string;
   image: string;
   url: string;
-  likes: [{
+  like: [{
     userId: number;
     length: number;
   }]
@@ -67,8 +67,8 @@ const ArticleSegment: React.FC<{ segment: ArticleSegmentProps }> = ({ segment })
   const [session,loading]= useSession();
   const note =  segment.segmentNote.find(e => e.authorId === session.userId )
   const [open, setOpen] = useState(false)
-  const [like, setLike] = useState(segment.likes.filter(e => e.userId === session.userId ))
-  const [totalLikes, setTotalLikes] = useState(segment.likes)
+  const [like, setLike] = useState(segment.like.filter(e => e.userId === session.userId ))
+  const [totalLikes, setTotalLikes] = useState(segment.like)
   const [content, setContent] = !note ? useState(""): useState(note.noteText);
 
 
@@ -92,7 +92,7 @@ const ArticleSegment: React.FC<{ segment: ArticleSegmentProps }> = ({ segment })
     e.preventDefault();
 
     try {
-      const body = { segmentId: segment.id, likes: segment.likes };
+      const body = { segmentId: segment.id, likes: segment.like };
       await fetch(`${process.env.NEXT_PUBLIC_API_URL}/like`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
@@ -115,82 +115,69 @@ const ArticleSegment: React.FC<{ segment: ArticleSegmentProps }> = ({ segment })
     !open ? 
       <div className="mt-4">
         <h1 className="sr-only">{segment.segmentType.name}</h1>
-        <ul className="space-y-4">
-          {questions.map((question) => (
-            <li key={question.id} className="bg-white px-4 py-6 shadow sm:p-6 sm:rounded-lg">
-              <article aria-labelledby={'question-title-' + question.id}>
-                <div>
-                  <h2  className="mt-4 text-base font-small text-red-900">
-                      {segment.segmentType.name}
-                  </h2>
-                  <h2 id={'question-title-' + question.id} className="mt-4 text-base font-medium text-gray-900">
-                    {segment.title}
-                  </h2>
-                </div>
-                <div
-                  className="mt-2 text-sm text-gray-700 space-y-4"
-                  dangerouslySetInnerHTML={{ __html: segment.description }}
-                />  
-                <div
-                  className="mt-2 text-sm text-gray-700 space-y-4"
-                  dangerouslySetInnerHTML={{ __html: segment.url }}
-                />
-                <div className="mt-6 flex justify-between space-x-8">
-                  <div className="flex space-x-6">
-                    <span className="inline-flex items-center text-sm">
-                      <button 
-                        className="inline-flex space-x-2 text-gray-400 hover:text-gray-500"
-                        onClick={submitLike}
-                      >
-                        { like.length > 0 ? <ThumbUpIcon className="h-5 w-5 text-indigo-600" aria-hidden="true" /> : <ThumbUpIcon className="h-5 w-5" aria-hidden="true" /> }
-                        <span className="font-medium text-gray-900">{totalLikes.length}</span>
-                        <span className="sr-only">likes</span>
-                      </button>
-                    </span>
-                    <span className="inline-flex items-center text-sm">
-                      <button className="inline-flex space-x-2 text-gray-400 hover:text-gray-500"
-                        onClick={()=> setOpen(true)}
+          <ul className="space-y-4">
+            {questions.map((question) => (
+              <div key={question.id} className="max-w-md mx-auto bg-white rounded-xl shadow-md overflow-hidden md:max-w-5xl">
+              <div className="md:flex">
+                <div className="p-8">
+                  <div className="uppercase tracking-wide text-sm text-indigo-500 font-semibold">{segment.segmentType.name}</div>
+                  <a href={segment.url} className="block mt-1 text-md leading-tight font-medium text-black hover:underline">{segment.title}</a>
+                  <p className="mt-2 text-gray-500">{segment.description}</p>
+                  <div className="mt-4 flex justify-between space-x-8">
+                    <div className="flex space-x-6">
+                        <span className="inline-flex items-center text-sm">
+                        <button 
+                            className="inline-flex space-x-2 text-gray-400 hover:text-gray-500"
+                            onClick={submitLike}
                         >
-                        <ChatAltIcon className="h-5 w-5" aria-hidden="true" />
-                        <span className="font-medium text-gray-900">{question.replies}</span>
-                        <span className="sr-only">replies</span>
-                      </button>
-                    </span>
-                    {/* <span className="inline-flex items-center text-sm">
-                      <button className="inline-flex space-x-2 text-gray-400 hover:text-gray-500">
-                        <EyeIcon className="h-5 w-5" aria-hidden="true" />
-                        <span className="font-medium text-gray-900">{question.views}</span>
-                        <span className="sr-only">views</span>
-                      </button>
-                    </span> */}
-                  </div>
-                  <div className="flex text-sm space-x-2">
-                    <div className="flex-shrink-0">
-                        <img className="h-10 w-10 rounded-full" src={segment.createdBy[0].image} alt="" />
+                            { like.length > 0 ? <ThumbUpIcon className="h-5 w-5 text-indigo-600" aria-hidden="true" /> : <ThumbUpIcon className="h-5 w-5" aria-hidden="true" /> }
+                            <span className="font-medium text-gray-900">{totalLikes.length}</span>
+                            <span className="sr-only">likes</span>
+                        </button>
+                        </span>
+                        <span className="inline-flex items-center text-sm">
+                        <button className="inline-flex space-x-2 text-gray-400 hover:text-gray-500"
+                            onClick={()=> setOpen(true)}
+                            >
+                            <ChatAltIcon className="h-5 w-5" aria-hidden="true" />
+                            <span className="font-medium text-gray-900">{question.replies}</span>
+                            <span className="sr-only">replies</span>
+                        </button>
+                        </span>
+                        {/* <span className="inline-flex items-center text-sm">
+                        <button className="inline-flex space-x-2 text-gray-400 hover:text-gray-500">
+                            <EyeIcon className="h-5 w-5" aria-hidden="true" />
+                            <span className="font-medium text-gray-900">{question.views}</span>
+                            <span className="sr-only">views</span>
+                        </button>
+                        </span> */}
                     </div>
-                    <div className="min-w-0 flex-1">
-                      <p className="text-sm font-medium text-gray-900">
-                        <a href={question.author.href} className="hover:underline">
-                          Added by: {segment.createdBy[0].name}
-                        </a>
-                      </p>
-                      <p className="text-sm text-gray-500">
-                        <a href={question.href} className="hover:underline">
-                          <time dateTime={question.datetime}></time>
-                        </a>
-                      </p>
+                    <div className="flex text-sm space-x-2">
+                        <div className="flex-shrink-0">
+                            <img className="h-10 w-10 rounded-full" src={segment.createdBy[0].image} alt="" />
+                        </div>
+                        <div className="min-w-0 flex-1">
+                        <p className="text-sm font-medium text-gray-900">
+                            <a href={question.author.href} className="hover:underline">
+                            Added by: {segment.createdBy[0].name}
+                            </a>
+                        </p>
+                        <p className="text-sm text-gray-500">
+                            <a href={question.href} className="hover:underline">
+                            <time dateTime={question.datetime}></time>
+                            </a>
+                        </p>
+                        </div>
                     </div>
                   </div>
-                  <div className="flex text-sm space-x-2">
-                    <div className="flex-wrap">
-                        <img className="h-11 w-11" src={segment.image} alt="" />
-                    </div>
                   </div>
-                </div>
-              </article>
-            </li>
-          ))}
-        </ul>
+                  <div className="md:flex-shrink-0">
+                    <img className="h-48 w-full object-cover md:h-full md:w-48" src={segment.image}  alt="" />
+                  </div>
+              </div>
+            </div>
+            ))}
+          </ul>
       </div> 
     : 
   <div className="mt-4">
@@ -226,7 +213,7 @@ const ArticleSegment: React.FC<{ segment: ArticleSegmentProps }> = ({ segment })
                   <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4"></circle>
                   <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
                   </svg> : null } */}
-                      Create 
+                      Save 
                 </button>
                 <button
                     type="button"
@@ -243,9 +230,12 @@ const ArticleSegment: React.FC<{ segment: ArticleSegmentProps }> = ({ segment })
             <div className="mt-6 flex justify-between space-x-8">
               <div className="flex space-x-6">
                 <span className="inline-flex items-center text-sm">
-                  <button className="inline-flex space-x-2 text-gray-400 hover:text-gray-500">
-                    <ThumbUpIcon className="h-5 w-5" aria-hidden="true" />
-                    <span className="font-medium text-gray-900">{segment.likes.length}</span>
+                  <button 
+                    className="inline-flex space-x-2 text-gray-400 hover:text-gray-500"
+                    onClick={submitLike}
+                  >
+                    { like.length > 0 ? <ThumbUpIcon className="h-5 w-5 text-indigo-600" aria-hidden="true" /> : <ThumbUpIcon className="h-5 w-5" aria-hidden="true" /> }
+                    <span className="font-medium text-gray-900">{totalLikes.length}</span>
                     <span className="sr-only">likes</span>
                   </button>
                 </span>
