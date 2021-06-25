@@ -70,7 +70,7 @@ const EpisodeListPage: React.FC<Props> = (props) => {
 
   return (
     <Layout>
-      <div className=" mt-8 sm:block">
+      <div className="mt-8 sm:block">
         <div className="mt-5 flex justify-center sm:mt-0">
           <CreateEpisode props={props}/>
         </div>

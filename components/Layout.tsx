@@ -60,16 +60,24 @@ const Layout: React.FC<Props> = (props) => {
                 <div className="flex items-center">
                   <div className="flex-shrink-0">
                     <div className="block lg:hidden h-8 w-auto">
-                      <Image 
-                        src="/images/csqb_small_logo.png" 
-                        alt="small csqb logo" width="100" height="38" 
-                      />
+                    <Link href="/">
+                      <a>
+                        <Image 
+                            src="/images/csqb_small_logo.png" 
+                            alt="small csqb logo" width="100" height="38" 
+                          />
+                      </a>
+                    </Link>
                     </div>
                     <div className="hidden lg:block h-4 w-auto flex-shrink-0">
-                      <Image
-                        src="/images/csqb_logo.png" 
-                        alt="csqb logo" width="150" height="18" 
-                      />
+                    <Link href="/">
+                      <a>
+                        <Image
+                            src="/images/csqb_logo.png" 
+                            alt="csqb logo" width="150" height="18" 
+                          />
+                      </a>
+                    </Link>
                     </div>
                   </div>
                   <div className="hidden md:block">

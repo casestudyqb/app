@@ -6,6 +6,7 @@ module.exports = {
     content: ["./pages/**/*.js"],
     cursor: {
       default: 'default',
+      pointer: 'pointer'
     }
   },
   variants: {
