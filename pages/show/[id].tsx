@@ -1,9 +1,7 @@
 import React from "react";
 import { GetServerSideProps } from "next";
-import ReactMarkdown from "react-markdown";
 import Layout from "../../components/Layout";
-import Router from "next/router";
-import { PostProps } from "../../components/Post";
+import { useRouter } from 'next/router'
 import EpisodeList, {EpisodeListProps} from "../../components/episode/EpisodeList";
 import prisma from '../../lib/prisma'
 import { useSession } from "next-auth/client";
@@ -56,17 +54,26 @@ type Props = {
   episodes: EpisodeListProps[];
 };
 
-const EpisodeListPage: React.FC<Props> = (props) => {
+const EpisodeListPage: React.FC<Props> = props => {
   const [session, loading] = useSession();
+  const router = useRouter()
+  
   if (loading) {
     return <div>Authenticating ...</div>;
   }
-  const userHasValidSession = Boolean(session);
-  // const postBelongsToUser = session?.user?.email === props.author?.email;
-  // let title = props.title;
-  // if (!props.published) {
-  //   title = `${title} (Draft)`;
-  // }
+
+    if (!session) {
+      router.push('/api/auth/signin')
+    }
+
+
+  if (!session) {
+    return (
+      <Layout>
+        <div>You need to be authenticated to view this page.</div>
+      </Layout>
+    );
+  }
 
   return (
     <Layout>
