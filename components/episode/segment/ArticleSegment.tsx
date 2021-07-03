@@ -137,6 +137,31 @@ const ArticleSegment: React.FC<{ segment: ArticleSegmentProps, status: string }>
 
   };
 
+  const AssignButton = () => {
+    if (!assigned) {
+      return <button
+        onClick={submitAssignment}
+        type="button"
+        className="inline-flex items-center px-3 py-1.5 border border-transparent text-xs font-medium rounded-full shadow-sm text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500"
+        >
+        Not Assigned
+      </button>
+    } else {
+    return <div className="flex text-sm space-x-2 cursor-pointer" onClick={submitAssignment}>
+      <div className="flex-shrink-0">
+          <img className="h-10 w-10 rounded-full " src={assigned.image} alt="" />
+      </div>
+      <div className="min-w-0 flex-1">
+        <p className="text-sm font-medium text-gray-900 mt-2" >
+            <span>
+              Assigned to: {assigned.name}
+            </span>
+        </p>
+      </div>
+    </div>
+    }
+  }
+
 
   return (
     !open ? 
@@ -196,28 +221,7 @@ const ArticleSegment: React.FC<{ segment: ArticleSegmentProps, status: string }>
                           </p> */}
                         </div>
                     </div>
-                    { !assigned ? 
-                      <button
-                        onClick={submitAssignment}
-                        type="button"
-                        className="inline-flex items-center px-3 py-1.5 border border-transparent text-xs font-medium rounded-full shadow-sm text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500"
-                      >
-                        Not Assigned
-                    </button>
-                    :
-                      <div className="flex text-sm space-x-2 cursor-pointer" onClick={submitAssignment}>
-                        <div className="flex-shrink-0">
-                            <img className="h-10 w-10 rounded-full " src={assigned.image} alt="" />
-                        </div>
-                        <div className="min-w-0 flex-1">
-                          <p className="text-sm font-medium text-gray-900 mt-2" >
-                              <span>
-                                Assigned to: {assigned.name}
-                              </span>
-                          </p>
-                        </div>
-                    </div>
-                    }
+                    {status === "final" ? <AssignButton /> : null}
                   </div>
                   </div>
                   <div className="md:flex-shrink-0">
