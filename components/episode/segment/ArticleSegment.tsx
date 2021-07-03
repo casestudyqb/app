@@ -35,6 +35,11 @@ export type ArticleSegmentProps = {
       image: string;
     }
   ];
+  assignedTo: 
+    {
+      name: string;
+      image: string;
+    };
 };
 
 const questions = [
@@ -63,13 +68,15 @@ function classNames(...classes) {
   return classes.filter(Boolean).join(' ')
 }
 
-const ArticleSegment: React.FC<{ segment: ArticleSegmentProps }> = ({ segment }) => {
+const ArticleSegment: React.FC<{ segment: ArticleSegmentProps, status: string }> = 
+  ({ segment, status }) => {
   const [session,loading]= useSession();
   const note =  segment.segmentNote.find(e => e.authorId === session.userId )
   const [open, setOpen] = useState(false)
   const [like, setLike] = useState(segment.like.filter(e => e.userId === session.userId ))
   const [totalLikes, setTotalLikes] = useState(segment.like)
   const [content, setContent] = !note ? useState(""): useState(note.noteText);
+  const [assigned, setAssigned] = useState(segment.assignedTo)
 
 
 
@@ -103,6 +110,26 @@ const ArticleSegment: React.FC<{ segment: ArticleSegmentProps }> = ({ segment })
       .then((json) => {
         setTotalLikes(json)
         setLike(json.filter(e => e.userId === session.userId ))
+      });
+    } catch (error) {
+      console.error(error);
+    }
+
+  };
+
+  const submitAssignment = async (e: React.SyntheticEvent) => {
+    e.preventDefault();
+
+    try {
+      const body = { segmentId: segment.id};
+      await fetch(`${process.env.NEXT_PUBLIC_API_URL}/assign`, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(body),
+      }).then((response) => {
+        return response.json();
+      }).then((json) => {
+        setAssigned(json.assignedTo)
       });
     } catch (error) {
       console.error(error);
@@ -157,18 +184,40 @@ const ArticleSegment: React.FC<{ segment: ArticleSegmentProps }> = ({ segment })
                             <img className="h-10 w-10 rounded-full" src={segment.createdBy[0].image} alt="" />
                         </div>
                         <div className="min-w-0 flex-1">
-                        <p className="text-sm font-medium text-gray-900">
-                            <a href={question.author.href} className="hover:underline">
-                            Added by: {segment.createdBy[0].name}
-                            </a>
-                        </p>
-                        <p className="text-sm text-gray-500">
-                            <a href={question.href} className="hover:underline">
-                            <time dateTime={question.datetime}></time>
-                            </a>
-                        </p>
+                          <p className="text-sm font-medium text-gray-900 mt-2" >
+                              <span>
+                                Added by: {segment.createdBy[0].name}
+                              </span>
+                          </p>
+                          {/* <p className="text-sm text-gray-500">
+                              <a href={question.href} className="hover:underline">
+                              <time dateTime={question.datetime}></time>
+                              </a>
+                          </p> */}
                         </div>
                     </div>
+                    { !assigned ? 
+                      <button
+                        onClick={submitAssignment}
+                        type="button"
+                        className="inline-flex items-center px-3 py-1.5 border border-transparent text-xs font-medium rounded-full shadow-sm text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500"
+                      >
+                        Not Assigned
+                    </button>
+                    :
+                      <div className="flex text-sm space-x-2 cursor-pointer" onClick={submitAssignment}>
+                        <div className="flex-shrink-0">
+                            <img className="h-10 w-10 rounded-full " src={assigned.image} alt="" />
+                        </div>
+                        <div className="min-w-0 flex-1">
+                          <p className="text-sm font-medium text-gray-900 mt-2" >
+                              <span>
+                                Assigned to: {assigned.name}
+                              </span>
+                          </p>
+                        </div>
+                    </div>
+                    }
                   </div>
                   </div>
                   <div className="md:flex-shrink-0">

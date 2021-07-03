@@ -25,7 +25,7 @@ export const getServerSideProps: GetServerSideProps = async ({ params }) => {
           title: true,
           draft: true,
           url: true,
-          segmentId:true,
+          segmentId: true,
           like: {
             select: {
               id: true,
@@ -48,6 +48,12 @@ export const getServerSideProps: GetServerSideProps = async ({ params }) => {
           image: true,
           //createdAt: true,
           createdBy: {
+            select:{
+              name: true,
+              image: true
+            }
+          },
+          assignedTo: {
             select:{
               name: true,
               image: true
@@ -149,7 +155,7 @@ const Tabs = ({ color, props }) => {
                 <div className={openTab === 1 ? "block" : "hidden"} id="link1">
                 {props.segments.map(data => {
                   if (data.segmentId === 1 && data.draft === false) {
-                    return <ArticleSegment key={data.id} segment={data} />
+                    return <ArticleSegment key={data.id} segment={data} status={"final"} />
                   } else if (data.segmentId === 2 && data.draft === false) {
                     return <TextSegment key={data.id} segment={data} />
                   } else if (data.segmentId === 3 && data.draft === false) {
@@ -160,7 +166,7 @@ const Tabs = ({ color, props }) => {
                 <div className={openTab === 2 ? "block" : "hidden"} id="link2">
                   {props.segments.map(data => {
                     if (data.segmentId === 1 && data.draft === true) {
-                      return <ArticleSegment key={data.id} segment={data} />
+                      return <ArticleSegment key={data.id} segment={data} status={"draft"}/>
                     } else if (data.segmentId === 2 && data.draft === true) {
                       return <TextSegment key={data.id} segment={data} />
                     } else if (data.segmentId === 3 && data.draft === true) {

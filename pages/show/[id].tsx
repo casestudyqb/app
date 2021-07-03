@@ -97,7 +97,7 @@ const EpisodeListPage: React.FC<Props> = props => {
                 <th className="pr-6 py-3 border-b border-gray-200 bg-gray-50 text-right text-xs font-medium text-gray-500 uppercase tracking-wider"></th>
               </tr>
             </thead>
-            {props.episodes.map((episode) => (
+            {props.episodes.reverse().map((episode) => (
             <EpisodeList  key={episode.id} episode={episode} />
               ))}
           </table>

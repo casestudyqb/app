@@ -32,6 +32,7 @@ model User {
   segmentNotes  SegmentNote[]
   episodes      Episode[]     @relation("EpisodeParticipants")
   segments      Segment[]     @relation("SegmentCreatedBy")
+  assigned      Segment[]
 
   @@map("users")
 }
@@ -113,11 +114,13 @@ model Segment {
   draft         Boolean         @default(true)
   episodeId     Int
   segmentId     Int
+  assignedId    Int?      
   createdAt     DateTime        @default(now()) @map("created_at")
   updatedAt     DateTime        @default(now()) @map("updated_at")
   siteName      String          @default("SiteName")
   episode       Episode         @relation(fields: [episodeId], references: [id])
   segmentType   SegmentType     @relation(fields: [segmentId], references: [id])
+  assignedTo    User?            @relation(fields: [assignedId], references: [id])
   like          Like[]
   segmentNote   SegmentNote[]
   segmentPicUrl SegmentPicUrl[]
