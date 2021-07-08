@@ -150,7 +150,7 @@ model SegmentType {
 
 model SegmentNote {
   id        Int      @id @default(autoincrement())
-  noteText  String
+  noteText  String   @db.VarChar(2000)
   authorId  Int
   segmentId Int
   createdAt DateTime @default(now()) @map("created_at")

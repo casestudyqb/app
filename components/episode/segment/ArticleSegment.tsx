@@ -89,7 +89,7 @@ const ArticleSegment: React.FC<{ segment: ArticleSegmentProps, status: string }>
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify(body),
-      });
+      }).then(()=> setOpen(false));
     } catch (error) {
       console.error(error);
     }
@@ -241,7 +241,7 @@ const ArticleSegment: React.FC<{ segment: ArticleSegmentProps, status: string }>
           <article aria-labelledby={'question-title-' + question.id}>
             <div>
               <h2  className="mt-4 text-base font-small text-red-900">
-                  My Notes
+                  My Notes ({content.length}/2000)
               </h2>
             </div>
             <form onSubmit={submitData}>
@@ -258,7 +258,7 @@ const ArticleSegment: React.FC<{ segment: ArticleSegmentProps, status: string }>
                 {/* <input disabled={!content} type="submit" value="Create" /> */}
                 <button
                     // onClick={()=> getData({title, description, url, image, episodeId, segmentId})}
-                    disabled={!content}
+                    disabled={!content || content.length > 2000}
                     type="submit"
                     className="w-full inline-flex justify-center rounded-md border border-transparent shadow-sm px-4 py-2 bg-indigo-600 text-base font-medium text-white hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 sm:col-start-1 sm:text-sm disabled:opacity-50 disabled:cursor-default"
                     >
@@ -326,11 +326,11 @@ const ArticleSegment: React.FC<{ segment: ArticleSegmentProps, status: string }>
                   </p>
                 </div>
               </div>
-              <div className="flex text-sm space-x-2">
+              {/* <div className="flex text-sm space-x-2">
                 <div className="flex-wrap">
                     <img className="h-11 w-11" src={segment.image} alt="" />
                 </div>
-              </div>
+              </div> */}
             </div>
           </article>
         </li>

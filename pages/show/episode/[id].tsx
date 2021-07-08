@@ -157,9 +157,9 @@ const Tabs = ({ color, props }) => {
                   if (data.segmentId === 1 && data.draft === false) {
                     return <ArticleSegment key={data.id} segment={data} status={"final"} />
                   } else if (data.segmentId === 2 && data.draft === false) {
-                    return <TextSegment key={data.id} segment={data} />
+                    return <TextSegment key={data.id} segment={data} status={"final"}/>
                   } else if (data.segmentId === 3 && data.draft === false) {
-                    return <PictureSegment key={data.id} segment={data} />
+                    return <PictureSegment key={data.id} segment={data} status={"final"}/>
                   }
                 })}
                 </div>
@@ -168,9 +168,9 @@ const Tabs = ({ color, props }) => {
                     if (data.segmentId === 1 && data.draft === true) {
                       return <ArticleSegment key={data.id} segment={data} status={"draft"}/>
                     } else if (data.segmentId === 2 && data.draft === true) {
-                      return <TextSegment key={data.id} segment={data} />
+                      return <TextSegment key={data.id} segment={data} status={"final"}/>
                     } else if (data.segmentId === 3 && data.draft === true) {
-                      return <PictureSegment key={data.id} segment={data} />
+                      return <PictureSegment key={data.id} segment={data} status={"final"}/>
                     }
                   })}
                 </div>
