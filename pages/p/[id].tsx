@@ -40,6 +40,7 @@ async function deletePost(id: number): Promise<void> {
 
 const Post: React.FC<PostProps> = (props) => {
   const [session, loading] = useSession();
+  
   if (loading) {
     return <div>Authenticating ...</div>;
   }

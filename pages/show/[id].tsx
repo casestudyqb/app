@@ -1,7 +1,7 @@
 import React from "react";
 import { GetServerSideProps } from "next";
 import Layout from "../../components/Layout";
-import { useRouter } from 'next/router'
+import { useRouter } from 'next/router';
 import EpisodeList, {EpisodeListProps} from "../../components/episode/EpisodeList";
 import prisma from '../../lib/prisma'
 import { useSession } from "next-auth/client";
@@ -62,10 +62,9 @@ const EpisodeListPage: React.FC<Props> = props => {
     return <div>Authenticating ...</div>;
   }
 
-    if (!session) {
-      router.push('/api/auth/signin')
-    }
-
+  if (!session) {
+    router.push('/api/auth/signin')
+  }
 
   if (!session) {
     return (

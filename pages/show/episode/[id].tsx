@@ -2,6 +2,7 @@ import React from "react";
 import { GetServerSideProps } from "next";
 import Layout from "../../../components/Layout";
 import {EpisodeListProps} from "../../../components/episode/EpisodeList";
+import { useRouter } from 'next/router';
 import prisma from '../../../lib/prisma'
 import { useSession } from "next-auth/client";
 import ArticleSegment from "../../../components/episode/segment/ArticleSegment"
@@ -157,9 +158,9 @@ const Tabs = ({ color, props }) => {
                   if (data.segmentId === 1 && data.draft === false) {
                     return <ArticleSegment key={data.id} segment={data} status={"final"} />
                   } else if (data.segmentId === 2 && data.draft === false) {
-                    return <TextSegment key={data.id} segment={data} status={"final"}/>
+                    return <TextSegment key={data.id} segment={data} />
                   } else if (data.segmentId === 3 && data.draft === false) {
-                    return <PictureSegment key={data.id} segment={data} status={"final"}/>
+                    return <PictureSegment key={data.id} segment={data} />
                   }
                 })}
                 </div>
@@ -168,9 +169,9 @@ const Tabs = ({ color, props }) => {
                     if (data.segmentId === 1 && data.draft === true) {
                       return <ArticleSegment key={data.id} segment={data} status={"draft"}/>
                     } else if (data.segmentId === 2 && data.draft === true) {
-                      return <TextSegment key={data.id} segment={data} status={"final"}/>
+                      return <TextSegment key={data.id} segment={data} />
                     } else if (data.segmentId === 3 && data.draft === true) {
-                      return <PictureSegment key={data.id} segment={data} status={"final"}/>
+                      return <PictureSegment key={data.id} segment={data} />
                     }
                   })}
                 </div>
@@ -185,10 +186,25 @@ const Tabs = ({ color, props }) => {
 
 const EpisodePage: React.FC<Props> = (props) => {
   const [session, loading] = useSession();
+  const router = useRouter();
+
   if (loading) {
     return <div>Authenticating ...</div>;
   }
-  const userHasValidSession = Boolean(session);
+
+  if (!session) {
+    router.push('/api/auth/signin')
+  }
+
+  if (!session) {
+    return (
+      <Layout>
+        <div>You need to be authenticated to view this page.</div>
+      </Layout>
+    );
+  }
+
+  //const userHasValidSession = Boolean(session);
   // const postBelongsToUser = session?.user?.email === props.author?.email;
   // let title = props.title;
   // if (!props.published) {
