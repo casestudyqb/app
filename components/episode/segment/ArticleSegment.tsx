@@ -6,7 +6,7 @@ import {
 } from '@heroicons/react/solid'
 
 import {  useQuery, useMutation, useQueryClient } from 'react-query'
-import { fetchLikes } from '../../../pages/hooks/useLikes'
+import { fetchLikes } from '../../../hooks/useLikes'
 
 
 export type ArticleSegmentProps = {
@@ -81,7 +81,7 @@ const ArticleSegment: React.FC<{ segment: ArticleSegmentProps, status: string }>
   const [content, setContent] = !note ? useState(""): useState(note.noteText);
   const [assigned, setAssigned] = useState(segment.assignedTo)
 
-  const { data } = useQuery('likes', ()=>fetchLikes(segment.id))
+  const { data } = useQuery(['likes', segment.id], ()=>fetchLikes(segment.id))
 
   const submitData = async (e: React.SyntheticEvent) => {
     e.preventDefault();
@@ -122,8 +122,10 @@ const ArticleSegment: React.FC<{ segment: ArticleSegmentProps, status: string }>
   const queryClient = useQueryClient();
 
   const { mutate } = useMutation(submitLike, {
-    onMutate: () => {
-      queryClient.setQueryData("likes", (prev: any) => {
+    onMutate: async () => {
+      await queryClient.cancelQueries('likes')
+
+      queryClient.setQueryData(["likes", segment.id], (prev: any) => {
         const isLiked = prev.like.filter((num: any) => num.userId === session.userId).length > 0 
                             ? true : false
 

@@ -11,7 +11,7 @@ import CreateSegment from "../../../components/episode/segment/CreateSegment"
 
 import { QueryClient, useQuery } from 'react-query'
 import { dehydrate } from 'react-query/hydration'
-import { fetchEpisodes } from '../../hooks/useEpisodes'
+import { fetchEpisodes } from '../../../hooks/useEpisodes'
 
 export const getServerSideProps: GetServerSideProps = async ({params}) => {
   const queryClient = new QueryClient()
