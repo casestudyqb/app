@@ -2,6 +2,7 @@ import React from "react";
 import { Provider } from "next-auth/client";
 import { AppProps } from "next/app";
 import { QueryClient, QueryClientProvider } from 'react-query'
+import { ReactQueryDevtools } from 'react-query/devtools'
 import { Hydrate } from 'react-query/hydration'
 import "tailwindcss/tailwind.css";
 
@@ -14,6 +15,7 @@ const App = ({ Component, pageProps }: AppProps) => {
         <Hydrate state={pageProps.dehydratedState}>
           <Component {...pageProps} />
         </Hydrate>
+        <ReactQueryDevtools />
       </QueryClientProvider>
     </Provider>
 

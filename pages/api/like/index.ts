@@ -10,18 +10,6 @@ export default async function handle(req, res) {
   const session = await getSession({ req });
   const { userId } = session;
 
-  // const numOfLikes = await prisma.like.groupBy({
-  //   by: ['segmentId'],
-  //     where: {
-  //       segmentId: {
-  //         in: segmentId,
-  //       },
-  //     },
-  //     _sum: {
-  //       userId: true,
-  //     }
-  // })
-
   const getLikes = await prisma.like.groupBy({ 
     by: ['segmentId', 'userId', 'created_at', 'id'],
     where: {
@@ -30,15 +18,6 @@ export default async function handle(req, res) {
       }
     }
    })
-
-  // const getLikes = await prisma.like.groupBy({
-  //   by: ['segmentId', 'userId', 'createdAt', 'id'],
-  //   where: {
-  //     segmentId: {
-  //       in: segmentId
-  //     }
-  //   }
-  // })
 
   const oneLike = getLikes.filter(oneLike => oneLike.userId === userId)
 
@@ -77,4 +56,8 @@ export default async function handle(req, res) {
     //console.log("result", result)
     res.json(result)
   }
+}
+
+export async function fetchLikes(req, res) {
+  return { test: "test"}
 }

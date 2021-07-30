@@ -5,9 +5,6 @@ import {
   ThumbUpIcon,
 } from '@heroicons/react/solid'
 
-import {  useQuery, useMutation, useQueryClient } from 'react-query'
-import { fetchLikes, useLikes } from '../../../pages/hooks/useLikes'
-
 
 export type ArticleSegmentProps = {
   id: number;
@@ -76,12 +73,12 @@ const ArticleSegment: React.FC<{ segment: ArticleSegmentProps, status: string }>
   const [session,loading]= useSession();
   const note =  segment.segmentNote.find(e => e.authorId === session.userId )
   const [open, setOpen] = useState(false)
-  //const [like, setLike] = useState(segment.like.filter(e => e.userId === session.userId ))
-  //const [totalLikes, setTotalLikes] = useState(segment.like)
+  const [like, setLike] = useState(segment.like.filter(e => e.userId === session.userId ))
+  const [totalLikes, setTotalLikes] = useState(segment.like)
   const [content, setContent] = !note ? useState(""): useState(note.noteText);
   const [assigned, setAssigned] = useState(segment.assignedTo)
 
-  const { data } = useQuery('likes', ()=>fetchLikes(segment.id))
+
 
   const submitData = async (e: React.SyntheticEvent) => {
     e.preventDefault();
@@ -110,32 +107,16 @@ const ArticleSegment: React.FC<{ segment: ArticleSegmentProps, status: string }>
       }).then((response) => {
         return response.json();
       })
-      // .then((json) => {
-      //   setTotalLikes(json)
-      //   setLike(json.filter(e => e.userId === session.userId ))
-      // });
+      .then((json) => {
+        setTotalLikes(json)
+        setLike(json.filter(e => e.userId === session.userId ))
+      });
     } catch (error) {
       console.error(error);
     }
+
   };
 
-  const queryClient = useQueryClient();
-
-  const { mutate } = useMutation(submitLike, {
-    onMutate: () => {
-      queryClient.setQueryData("likes", (prev: any) => {
-        const isLiked = prev.like.filter((num: any) => num.userId === session.userId).length > 0 
-                            ? true : false
-
-        isLiked ? prev.like.pop(({ userId: session.userId})) :
-                            prev.like.push({ userId: session.userId})
-
-        return prev
-      });
-    }
-  })
-
-  
   const submitAssignment = async (e: React.SyntheticEvent) => {
     e.preventDefault();
 
@@ -181,8 +162,6 @@ const ArticleSegment: React.FC<{ segment: ArticleSegmentProps, status: string }>
     }
   }
 
-  if (!data) return <div>loading</div>
-
 
   return (
     !open ? 
@@ -201,10 +180,10 @@ const ArticleSegment: React.FC<{ segment: ArticleSegmentProps, status: string }>
                         <span className="inline-flex items-center text-sm">
                         <button 
                             className="inline-flex space-x-2 text-gray-400 hover:text-gray-500"
-                            onClick={mutate}
+                            onClick={submitLike}
                         >
-                            { data.like.length > 0 ? <ThumbUpIcon className="h-5 w-5 text-indigo-600" aria-hidden="true" /> : <ThumbUpIcon className="h-5 w-5" aria-hidden="true" /> }
-                            <span className="font-medium text-gray-900">{data.like.length}</span>
+                            { like.length > 0 ? <ThumbUpIcon className="h-5 w-5 text-indigo-600" aria-hidden="true" /> : <ThumbUpIcon className="h-5 w-5" aria-hidden="true" /> }
+                            <span className="font-medium text-gray-900">{totalLikes.length}</span>
                             <span className="sr-only">likes</span>
                         </button>
                         </span>
@@ -308,8 +287,8 @@ const ArticleSegment: React.FC<{ segment: ArticleSegmentProps, status: string }>
                     className="inline-flex space-x-2 text-gray-400 hover:text-gray-500"
                     onClick={submitLike}
                   >
-                    { segment.like.length > 0 ? <ThumbUpIcon className="h-5 w-5 text-indigo-600" aria-hidden="true" /> : <ThumbUpIcon className="h-5 w-5" aria-hidden="true" /> }
-                    <span className="font-medium text-gray-900">{segment.like.length}</span>
+                    { like.length > 0 ? <ThumbUpIcon className="h-5 w-5 text-indigo-600" aria-hidden="true" /> : <ThumbUpIcon className="h-5 w-5" aria-hidden="true" /> }
+                    <span className="font-medium text-gray-900">{totalLikes.length}</span>
                     <span className="sr-only">likes</span>
                   </button>
                 </span>

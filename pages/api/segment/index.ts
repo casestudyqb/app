@@ -8,8 +8,6 @@ import { getSession } from "next-auth/client";
 export default async function handle(req, res) {
   const { title, description, url, image, episodeId, segmentId } = req.body;
 
-  console.log("episode id", episodeId)
-
   const session = await getSession({ req });
   const { userId } = session;
 

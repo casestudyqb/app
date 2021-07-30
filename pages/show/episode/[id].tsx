@@ -3,92 +3,27 @@ import { GetServerSideProps } from "next";
 import Layout from "../../../components/Layout";
 import {EpisodeListProps} from "../../../components/episode/EpisodeList";
 import { useRouter } from 'next/router';
-import prisma from '../../../lib/prisma'
 import { useSession } from "next-auth/client";
 import ArticleSegment from "../../../components/episode/segment/ArticleSegment"
 import PictureSegment from "../../../components/episode/segment/PictureSegment"
 import TextSegment from "../../../components/episode/segment/TextSegment"
 import CreateSegment from "../../../components/episode/segment/CreateSegment"
 
-export const getServerSideProps: GetServerSideProps = async ({ params }) => {
-  const episode = await prisma.episode.findUnique({
-    where: {
-      id: Number(params?.id) || -1,
-    },
-    select:{
-      id: true,
-      episodeNum: true,
-      description: true,
-      showId: true,
-      segments: {
-        select: {
-          id: true,
-          title: true,
-          draft: true,
-          url: true,
-          segmentId: true,
-          like: {
-            select: {
-              id: true,
-              userId: true
-            }
-          },
-          segmentNote: {
-            select: {
-              id: true,
-              noteText: true,
-              authorId: true
-            }
-          },
-          segmentType: {
-            select: {
-              name: true
-            }
-          },
-          description: true,
-          image: true,
-          //createdAt: true,
-          createdBy: {
-            select:{
-              name: true,
-              image: true
-            }
-          },
-          assignedTo: {
-            select:{
-              name: true,
-              image: true
-            }
-          }
-        }
-      },
-      show: {
-        select: {
-          name: true,
-          picUrl: true
-        }
-      }
-    }
-  });
-  
+import { QueryClient, useQuery } from 'react-query'
+import { dehydrate } from 'react-query/hydration'
+import { fetchEpisodes } from '../../hooks/useEpisodes'
+
+export const getServerSideProps: GetServerSideProps = async ({params}) => {
+  const queryClient = new QueryClient()
+
+  await queryClient.prefetchQuery('episodes', () => fetchEpisodes(params?.id))
+
   return {
-    props: episode
-  };
-};
-
-// async function publishPost(id: number): Promise<void> {
-//   await fetch(`http://localhost:3000/api/publish/${id}`, {
-//     method: "PUT",
-//   });
-//   await Router.push("/");
-// }
-
-// async function deletePost(id: number): Promise<void> {
-//   await fetch(`http://localhost:3000/api/post/${id}`, {
-//     method: "DELETE",
-//   });
-//   Router.push("/");
-// }
+    props: {
+      dehydratedState: dehydrate(queryClient),
+    }, 
+  }
+}
 
 type Props = {
   id: number
@@ -102,6 +37,7 @@ type Props = {
 
 const Tabs = ({ color, props }) => {
   const [openTab, setOpenTab] = React.useState(1);
+
   return (
     <>
       <div className="flex flex-wrap">
@@ -184,9 +120,13 @@ const Tabs = ({ color, props }) => {
   );
 };
 
-const EpisodePage: React.FC<Props> = (props) => {
+const EpisodePage: React.FC<Props> = () => {
   const [session, loading] = useSession();
   const router = useRouter();
+  const { id } = router.query
+
+  const { data } = useQuery('episodes', ()=>fetchEpisodes(id))
+
 
   if (loading) {
     return <div>Authenticating ...</div>;
@@ -219,22 +159,22 @@ const EpisodePage: React.FC<Props> = (props) => {
           <div className="sm:flex sm:items-center sm:justify-between">
             <div className="sm:flex sm:space-x-5">
               <div className="flex-shrink-0">
-                <img className="mx-auto h-20 w-20 rounded-full" src={props.show.picUrl} alt="" />
+                <img className="mx-auto h-20 w-20 rounded-full" src={data.show.picUrl} alt="" />
               </div>
               <div className="mt-4 text-center sm:mt-0 sm:pt-1 sm:text-left">
                 {/* <p className="text-sm font-medium text-gray-600">Welcome back,</p> */}
-                <p className="text-xl font-bold text-gray-900 sm:text-2xl">{props.description}</p>
-                <p className="text-sm font-medium text-gray-600">{props.show.name}</p>
+                <p className="text-xl font-bold text-gray-900 sm:text-2xl">{data.description}</p>
+                <p className="text-sm font-medium text-gray-600">{data.show.name}</p>
               </div>
             </div>
             <div className="mt-5 flex justify-center sm:mt-0">
-              <CreateSegment props={props}/>
+              <CreateSegment props={data}/>
             </div>
           </div>
         </div>
       </div>
       <main className="lg:col-span-9 xl:col-span-6">
-        <Tabs color="indigo" props={props} />
+        <Tabs color="indigo" props={data} />
       </main>
     </Layout>
   );
