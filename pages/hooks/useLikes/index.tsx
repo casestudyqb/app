@@ -1,4 +1,4 @@
-import { useQuery } from 'react-query'
+//import { useQuery } from 'react-query'
 
 const fetchLikes = async (id) => {
   const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/like/${id}`)
@@ -6,8 +6,8 @@ const fetchLikes = async (id) => {
   return feed
 }
 
-const useLikes = () => {
-  return useQuery('likes', () => fetchLikes(62))
-}
+// const useLikes = () => {
+//   return useQuery('likes', () => fetchLikes(62))
+// }
 
-export { fetchLikes, useLikes }
+export { fetchLikes }

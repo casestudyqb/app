@@ -6,7 +6,7 @@ import {
 } from '@heroicons/react/solid'
 
 import {  useQuery, useMutation, useQueryClient } from 'react-query'
-import { fetchLikes, useLikes } from '../../../pages/hooks/useLikes'
+import { fetchLikes } from '../../../pages/hooks/useLikes'
 
 
 export type ArticleSegmentProps = {
