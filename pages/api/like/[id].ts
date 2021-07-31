@@ -7,8 +7,6 @@ export default async function handle(req: NextApiRequest, res: NextApiResponse) 
 
   if (req.method === 'GET') {
     handleGET(postId, res)
-  } else if (req.method === 'DELETE') {
-    handleDELETE(postId, res)
   } else {
     throw new Error(
       `The HTTP ${req.method} method is not supported at this route.`
@@ -32,9 +30,9 @@ async function handleGET(segmentId, res) {
 }
 
 // DELETE /api/post/:id
-async function handleDELETE(postId, res) {
-  const post = await prisma.post.delete({
-    where: { id: Number(postId) },
-  })
-  res.json(post)
-}
+// async function handleDELETE(postId, res) {
+//   const post = await prisma.post.delete({
+//     where: { id: Number(postId) },
+//   })
+//   res.json(post)
+// }
