@@ -1,6 +1,6 @@
 import React, { useState, useRef } from 'react';
 
-export default function ArticleForm({submitData, closeModal, getData, loading}) {
+export default function PictureForm({submitData, closeModal, getData, loading}) {
 
   const [title, setTitle] = useState("");
   const [description, setDescription] = useState("");
@@ -14,31 +14,31 @@ export default function ArticleForm({submitData, closeModal, getData, loading}) 
   const cancelButtonRef = useRef()
 
 
-  const scrapper = async (e) => {
-    setUrl(e.target.value)
+//   const scrapper = async (e) => {
+//     setUrl(e.target.value)
 
-    if (e.nativeEvent.inputType === "insertFromPaste") {
-        setDescription("Loading Description...")
-        setTitle("Loading Title...")
+//     if (e.nativeEvent.inputType === "insertFromPaste") {
+//         setDescription("Loading Description...")
+//         setTitle("Loading Title...")
 
-        const body = { url: e.target.value }
+//         const body = { url: e.target.value }
 
-        await fetch(`${process.env.NEXT_PUBLIC_API_URL}/scrape`, {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(body),
-        })
-        .then(res=>res.json())
-        .then(data => {
-            setDescription(data.ogDescription)
-            setTitle(data.ogTitle)
-            setImage(data.ogImage.url)
-        })
-        .catch((error) => {
-        console.error('Error:', error);
-        }); 
-    }
-  };
+//         await fetch(`${process.env.NEXT_PUBLIC_API_URL}/scrape`, {
+//         method: "POST",
+//         headers: { "Content-Type": "application/json" },
+//         body: JSON.stringify(body),
+//         })
+//         .then(res=>res.json())
+//         .then(data => {
+//             setDescription(data.ogDescription)
+//             setTitle(data.ogTitle)
+//             setImage(data.ogImage.url)
+//         })
+//         .catch((error) => {
+//         console.error('Error:', error);
+//         }); 
+//     }
+//   };
 
   return (
     <form onSubmit={submitData}>
