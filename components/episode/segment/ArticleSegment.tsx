@@ -210,13 +210,13 @@ const ArticleSegment: React.FC<{ segment: ArticleSegmentProps, status: string }>
                   <a href={segment.url} className="block mt-1 text-md leading-tight font-medium text-black hover:underline">{segment.title}</a>
                   <p className="mt-2 text-gray-500">{segment.description}</p>
                   <div className="mt-4 flex justify-between space-x-8">
-                    <div className="flex space-x-6">{console.log(data.like.reduce((num)=> num.userId === session.userId) )}
+                    <div className="flex space-x-6">
                         <span className="inline-flex items-center text-sm">
                         <button 
                             className="inline-flex space-x-2 text-gray-400 hover:text-gray-500"
                             onClick={mutate}
                         >
-                            { !data.like.reduce((num)=> num.userId === session.userId) ? <ThumbUpIcon className="h-5 w-5 text-indigo-600" aria-hidden="true" /> : <ThumbUpIcon className="h-5 w-5" aria-hidden="true" /> }
+                            { data.like.filter(e => e.userId === session.userId).length > 0 ? <ThumbUpIcon className="h-5 w-5 text-indigo-600" aria-hidden="true" /> : <ThumbUpIcon className="h-5 w-5" aria-hidden="true" /> }
                             <span className="font-medium text-gray-900">{data.like.length}</span>
                             <span className="sr-only">likes</span>
                         </button>
