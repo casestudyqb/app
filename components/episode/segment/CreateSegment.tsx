@@ -105,6 +105,7 @@ const CreateSegment: React.FC<Props> = ({ props }) => {
                             <option value={2}>Think Tank</option>
                             <option value={3}>Meme of The Week</option>
                             <option value={4}>Corporate Death Penalty</option>
+                            <option value={5}>No Cancel Zone</option>
                         </select>
                         <div className={openTab === 1 ? "block" : "hidden"} id="link1">
                             { openTab === 1 ? <ArticleForm 
@@ -146,6 +147,18 @@ const CreateSegment: React.FC<Props> = ({ props }) => {
                         <div className={openTab === 4 ? "block" : "hidden"} id="link1">
                             { openTab === 4 ? <TextForm 
                                                     submitData={ submitData} 
+                                                    getData={data => {
+                                                        data.segmentId = openTab
+                                                        data.episodeId = props.id
+                                                        setData(data)
+                                                    }}
+                                                    closeModal={() => setOpen(false)}
+                                                    loading={loading}
+                                                /> : null }
+                        </div>
+                        <div className={openTab === 5 ? "block" : "hidden"} id="link1">
+                            { openTab === 5 ? <TextForm 
+                                                    submitData={submitData} 
                                                     getData={data => {
                                                         data.segmentId = openTab
                                                         data.episodeId = props.id

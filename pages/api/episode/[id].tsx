@@ -49,7 +49,8 @@ async function handleGET(episodeId, res) {
           },
           segmentType: {
             select: {
-              name: true
+              name: true,
+              layout: true
             }
           },
           description: true,

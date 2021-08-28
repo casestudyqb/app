@@ -91,23 +91,23 @@ const Tabs = ({ color, props }) => {
               <div className="tab-content tab-space">
                 <div className={openTab === 1 ? "block" : "hidden"} id="link1">
                 {props.segments.map(data => {
-                  if (data.segmentId === 1 && data.draft === false) {
+                  if (data.segmentType.layout === "ARTICLE" && data.draft === false) {
                     return <ArticleSegment key={data.id} segment={data} status={"final"} />
-                  } else if (data.segmentId === 2 && data.draft === false) {
-                    return <TextSegment key={data.id} segment={data} />
-                  } else if (data.segmentId === 3 && data.draft === false) {
-                    return <PictureSegment key={data.id} segment={data} />
+                  } else if (data.segmentType.layout === "TEXT" && data.draft === false) {
+                    return <TextSegment key={data.id} segment={data} status={"final"}/>
+                  } else if (data.segmentType.layout === "PICTURE" && data.draft === false) {
+                    return <PictureSegment key={data.id} segment={data} status={"final"} />
                   }
                 })}
                 </div>
                 <div className={openTab === 2 ? "block" : "hidden"} id="link2">
                   {props.segments.map(data => {
-                    if (data.segmentId === 1 && data.draft === true) {
+                    if (data.segmentType.layout === "ARTICLE" && data.draft === true) {
                       return <ArticleSegment key={data.id} segment={data} status={"draft"}/>
-                    } else if (data.segmentId === 2 && data.draft === true) {
-                      return <TextSegment key={data.id} segment={data} />
-                    } else if (data.segmentId === 3 && data.draft === true) {
-                      return <PictureSegment key={data.id} segment={data} />
+                    } else if (data.segmentType.layout === "TEXT" && data.draft === true) {
+                      return <TextSegment key={data.id} segment={data} status={"draft"} />
+                    } else if (data.segmentType.layout === "PICTURE" && data.draft === true) {
+                      return <PictureSegment key={data.id} segment={data} status={"draft"}/>
                     }
                   })}
                 </div>
