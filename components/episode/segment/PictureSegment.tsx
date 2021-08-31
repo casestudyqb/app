@@ -206,6 +206,7 @@ const PictureSegment: React.FC<{ segment: PictureSegmentProps, status: string }>
             <li key={question.id} className="bg-white px-4 py-6 shadow sm:p-6 sm:rounded-lg">
               <article aria-labelledby={'question-title-' + question.id}>
                 <div>
+                <div className="uppercase tracking-wide text-sm text-indigo-500 font-semibold text-center">{segment.segmentType.name}</div>
                   <h2 id={'question-title-' + question.id} className="mt-4 text-base font-medium text-gray-900">
                     {segment.title}
                   </h2>
