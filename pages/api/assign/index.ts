@@ -12,7 +12,7 @@ export default async function handle(req, res) {
 
   const isAssigned = await prisma.segment.findUnique({
     where: {
-      id: segmentId,
+      id: parseInt(segmentId),
     },
   })
 
@@ -20,7 +20,7 @@ export default async function handle(req, res) {
 
   if (!isAssigned.assignedId ){
      result = await prisma.segment.update({
-      where: { id: segmentId },
+      where: { id: parseInt(segmentId) },
       data: { assignedId: userId},
       include: {
         assignedTo: {
@@ -33,7 +33,7 @@ export default async function handle(req, res) {
     })
   } else {
      result = await prisma.segment.update({
-      where: { id: segmentId },
+      where: { id: parseInt(segmentId) },
       data: { assignedId: null},
     })
   }
